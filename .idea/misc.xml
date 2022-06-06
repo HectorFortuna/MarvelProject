@@ -3,17 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/background_item.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_fab.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_logo_marvel.xml" value="0.149" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/shadow.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/shape_bg.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/shape_item.xml" value="0.149" />
-        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/bottom_layout.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/character_detail.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/character_item.xml" value="0.25" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/toolbar_layout.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/menu/bottom_navigation.xml" value="0.203125" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/menu/toolbar.xml" value="0.5" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1395" />
       </map>
     </option>
   </component>
