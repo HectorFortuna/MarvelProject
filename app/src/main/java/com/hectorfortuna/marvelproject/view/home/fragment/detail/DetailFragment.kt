@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.detail
+package com.hectorfortuna.marvelproject.view.home.fragment.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
