@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
+import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.network.ApiService
@@ -21,8 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
 class HomeFragment : Fragment() {
-    lateinit var viewModel: HomeViewModel
-    lateinit var repository: CharacterRepository
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var repository: CharacterRepository
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var binding: FragmentHomeBinding
 
@@ -30,14 +32,13 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         repository = CharacterRepositoryImpl(ApiService.service)
         viewModel = HomeViewModel.HomeViewModelProviderFactory(repository, Dispatchers.IO)
@@ -53,15 +54,15 @@ class HomeFragment : Fragment() {
         viewModel.getCharacters(apiKey(), hash(), ts.toLong())
     }
 
-    private fun observeVMEvents(){
-        viewModel.response.observe(viewLifecycleOwner){
-            if(viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
+    private fun observeVMEvents() {
+        viewModel.response.observe(viewLifecycleOwner) {
+            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
 
-            when(it.status){
+            when (it.status) {
                 Status.SUCCESS -> {
-                    it.data?.let {response ->
+                    it.data?.let { response ->
                         Timber.tag("Sucesso").i(response.toString())
-                        setRecyclerView(response.data.results as MutableList<Results>)
+                        setRecyclerView(response.data.results)
                     }
                 }
                 Status.ERROR -> {
@@ -72,19 +73,22 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setAdapter(characterList: List<Results>) {
+        characterAdapter = CharacterAdapter(characterList) { character ->
+            Timber.tag("Click").i(character.name)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailFragment2,
+                Bundle().apply {
+                    putSerializable("CHARACTER", character)
+                })
+        }
+    }
 
-    private fun setAdapter(characterList: MutableList<Results>){
-        characterAdapter = CharacterAdapter(characterList)
-}
-    private fun setRecyclerView(characterList: MutableList<Results>){
+    private fun setRecyclerView(characterList: List<Results>) {
         setAdapter(characterList)
         binding.rvHomeFragment.apply {
             setHasFixedSize(true)
             adapter = characterAdapter
         }
-        //characterAdapter = CharacterAdapter(characterList)
-        //binding.rvHomeFragment.apply {
-        //    setHasFixedSize(true)
-        //    adapter = characterAdapter
     }
 }
