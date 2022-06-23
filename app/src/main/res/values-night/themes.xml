@@ -3,7 +3,7 @@
     <style name="Theme.MarvelProject" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red</item>
-        <item name="colorPrimaryVariant">@color/notification_bar</item>
+        <item name="colorPrimaryVariant">@color/bars_bg</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

@@ -1,14 +1,16 @@
 package com.hectorfortuna.marvelproject.view.home.fragment.home
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.marvelproject.R
+import com.hectorfortuna.marvelproject.core.BaseFragment
 import com.hectorfortuna.marvelproject.core.Status
+import com.hectorfortuna.marvelproject.core.hasInternet
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.network.ApiService
 import com.hectorfortuna.marvelproject.data.repository.CharacterRepository
@@ -22,12 +24,12 @@ import com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel.HomeVie
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
+
     private lateinit var viewModel: HomeViewModel
     private lateinit var repository: CharacterRepository
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var binding: FragmentHomeBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +41,27 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.tag("CONNECTION").i(hasInternet(context).toString())
 
         repository = CharacterRepositoryImpl(ApiService.service)
         viewModel = HomeViewModel.HomeViewModelProviderFactory(repository, Dispatchers.IO)
             .create(HomeViewModel::class.java)
 
-        getCharacters()
-        observeVMEvents()
+            checkConnection()
+            observeVMEvents()
+    }
 
+    override fun checkConnection() {
+        if(hasInternet(context)) {
+            getCharacters()
+        }else {
+            AlertDialog.Builder(context)
+                .setTitle(getString(R.string.connection_error))
+                .setMessage(getString(R.string.verify_ethernet))
+                .setPositiveButton(getString(R.string.confirm),{ _, _ ->})
+                .show()
+
+        }
     }
 
     private fun getCharacters() {
@@ -57,7 +72,6 @@ class HomeFragment : Fragment() {
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
@@ -92,3 +106,4 @@ class HomeFragment : Fragment() {
         }
     }
 }
+

@@ -9,7 +9,8 @@ import com.hectorfortuna.marvelproject.databinding.CharacterItemBinding
 
 class CharacterAdapter(
     private val characterList: List<Results>,
-    private val itemClick: ((item: Results) -> Unit)):
+    private val itemClick: ((item: Results) -> Unit)
+) :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
