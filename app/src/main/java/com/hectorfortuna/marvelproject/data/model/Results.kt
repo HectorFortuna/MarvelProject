@@ -1,9 +1,13 @@
 package com.hectorfortuna.marvelproject.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+@Entity(tableName = "results_table")
 data class Results(
+    @PrimaryKey
     @SerializedName("id")
     val id: Long,
     @SerializedName("name")
