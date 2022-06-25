@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment() {
             AlertDialog.Builder(context)
                 .setTitle(getString(R.string.connection_error))
                 .setMessage(getString(R.string.verify_ethernet))
-                .setPositiveButton(getString(R.string.confirm),{ _, _ ->})
+                .setPositiveButton(getString(R.string.confirm)) { _, _ ->}
                 .show()
 
         }

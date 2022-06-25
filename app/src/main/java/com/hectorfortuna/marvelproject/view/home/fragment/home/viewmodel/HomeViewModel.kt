@@ -49,6 +49,5 @@ class HomeViewModel(
             }
             throw IllegalArgumentException("Unknown viewModel Class")
         }
-
     }
 }
