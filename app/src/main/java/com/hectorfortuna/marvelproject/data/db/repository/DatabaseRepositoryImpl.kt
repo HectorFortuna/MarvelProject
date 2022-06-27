@@ -13,4 +13,8 @@ class DatabaseRepositoryImpl(private val dao: CharacterDAO):DatabaseRepository {
 
     override suspend fun deleteCharacter(result: Results) =
         dao.deleteCharacter(result)
+
+    override suspend fun getFavouriteCharacter(characterId: Long): Results? =
+        dao.getFavouriteCharacter(characterId)
+
 }

@@ -2,6 +2,7 @@ package com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel
 
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
+import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.model.Results
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,6 +14,7 @@ class DetailViewModel(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
+    private lateinit var dao : CharacterDAO
     private val _response = MutableLiveData<State<Boolean>>()
     val response: LiveData<State<Boolean>> = _response
 
@@ -28,6 +30,7 @@ class DetailViewModel(
             }
         }
     }
+
 
     class DetailViewModelProviderFactory(
         private val repository: DatabaseRepository,

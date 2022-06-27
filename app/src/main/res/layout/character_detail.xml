@@ -100,7 +100,7 @@
             android:backgroundTint="@color/white"
             android:contentDescription="@null"
             android:src="@drawable/ic_fab"
-
+            tools:src="@drawable/ic_full_favourite"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
