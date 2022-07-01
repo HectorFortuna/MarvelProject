@@ -40,7 +40,6 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         character = arguments?.getSerializable("CHARACTER") as Results
-
         repository = DatabaseRepositoryImpl(dao)
         viewModel = DetailViewModel.DetailViewModelProviderFactory(repository, Dispatchers.IO)
             .create(DetailViewModel::class.java)
@@ -48,19 +47,15 @@ class DetailFragment : Fragment() {
         setColorHeart()
 
         binding.run {
-
             setImage(imgDetails)
-
             setImage(imgDetailsPrincipal)
 
             txtDetails.text = character.name
-
             txtDescription.text = character.description
 
             fabDetails.setOnClickListener{
                 viewModel.insertCharacters(character)
                 fabDetails.setImageResource(R.drawable.ic_full_favourite)
-
             }
         }
 

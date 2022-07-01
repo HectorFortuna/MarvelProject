@@ -88,14 +88,15 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setAdapter(characterList: List<Results>) {
-        characterAdapter = CharacterAdapter(characterList) { character ->
+        characterAdapter = CharacterAdapter(characterList,{ character ->
             Timber.tag("Click").i(character.name)
             findNavController().navigate(
                 R.id.action_homeFragment_to_detailFragment2,
                 Bundle().apply {
                     putSerializable("CHARACTER", character)
-                })
-        }
+                }
+            )
+        })
     }
 
     private fun setRecyclerView(characterList: List<Results>) {
