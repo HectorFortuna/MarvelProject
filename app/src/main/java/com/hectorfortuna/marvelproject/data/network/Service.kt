@@ -16,4 +16,12 @@ interface Service {
         @Query("hash") hash: String,
         @Query("ts") ts: Long
     ): CharacterResponse
+
+    @GET("/v1/public/characters")
+    suspend fun searchCharacters(
+        @Query("nameStartsWith") nameStartsWith: String,
+        @Query("apikey") apiKey: String,
+        @Query("hash") hash: String,
+        @Query("ts") ts: Long
+    ): CharacterResponse
 }

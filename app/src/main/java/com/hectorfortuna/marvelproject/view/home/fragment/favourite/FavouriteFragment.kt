@@ -13,6 +13,7 @@ import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.databinding.FragmentFavouriteBinding
+import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.view.adapter.CharacterAdapter
 import com.hectorfortuna.marvelproject.view.home.fragment.favourite.viewmodel.FavouriteViewModel
 import kotlinx.coroutines.Dispatchers
@@ -58,7 +59,7 @@ class FavouriteFragment : Fragment() {
         characterAdapter = CharacterAdapter(characterList, ::goToDetail, ::deleteCharacters)
     }
 
-    private fun goToDetail(results: Results){
+    private fun goToDetail(results: Results) {
         findNavController().navigate(
             R.id.action_favouriteFragment_to_detailFragment,
             Bundle().apply {
@@ -66,8 +67,15 @@ class FavouriteFragment : Fragment() {
             })
     }
 
-    private fun deleteCharacters(results: Results){
-        viewModel.deleteCharacters(results)
+    private fun deleteCharacters(results: Results) {
+        ConfirmDialog(
+            title = "Confirmação",
+            message = "Tem certeza que gostaria de deletar este personagem?"
+        ).apply {
+            setListener {
+                viewModel.deleteCharacters(results)
+            }
+        }.show(parentFragmentManager, "Dialog")
     }
 
     private fun setRecyclerView(characterList: List<Results>) {

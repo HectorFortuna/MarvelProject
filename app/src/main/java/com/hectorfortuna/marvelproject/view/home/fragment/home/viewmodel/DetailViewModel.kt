@@ -2,7 +2,6 @@ package com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel
 
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
-import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.model.Results
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,9 +13,15 @@ class DetailViewModel(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private lateinit var dao : CharacterDAO
     private val _response = MutableLiveData<State<Boolean>>()
     val response: LiveData<State<Boolean>> = _response
+
+    private val _verifyCharacter = MutableLiveData<State<Boolean>>()
+    val verifyCharacter: LiveData<State<Boolean>> = _verifyCharacter
+
+    private val _delete = MutableLiveData<State<Boolean>>()
+    val delete : LiveData<State<Boolean>>
+        get() = _delete
 
     fun insertCharacters(result: Results) {
         viewModelScope.launch {
@@ -31,6 +36,33 @@ class DetailViewModel(
         }
     }
 
+    fun verifySavedCharacter(characterId: Long){
+        viewModelScope.launch {
+            try {
+                val result = withContext(ioDispatcher){
+                    databaseRepository.getFavouriteCharacter(characterId)
+                }
+                _verifyCharacter.value = State.success(result != null)
+
+            } catch(throwable: Throwable){
+                _verifyCharacter.value = State.error(throwable)
+            }
+        }
+    }
+
+    fun deleteCharacters(results: Results) = viewModelScope.launch {
+        try {
+            _delete.value = State.loading(true)
+            withContext(ioDispatcher) {
+                databaseRepository.deleteCharacter(results)
+            }
+            _delete.value = State.loading(false)
+            _delete.value = State.success(true)
+        } catch (e: Exception){
+            _delete.value = State.loading(false)
+            _delete.value = State.error(e)
+        }
+    }
 
     class DetailViewModelProviderFactory(
         private val repository: DatabaseRepository,
