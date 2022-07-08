@@ -2,9 +2,9 @@ package com.hectorfortuna.marvelproject.view.home.fragment.home
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -37,6 +37,7 @@ class HomeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setupToolbar()
         return binding.root
     }
 
@@ -48,18 +49,43 @@ class HomeFragment : BaseFragment() {
         viewModel = HomeViewModel.HomeViewModelProviderFactory(repository, Dispatchers.IO)
             .create(HomeViewModel::class.java)
 
-            checkConnection()
-            observeVMEvents()
+        binding.includeToolbar.searchCharacter.addTextChangedListener{  inputText ->
+            inputText?.let{
+                searchCharacter(it.toString())
+            }
+        }
+        checkConnection()
+        observeVMEvents()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search -> {
+                binding.includeToolbar.searchCharacter.visibility = View.VISIBLE
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupToolbar() {
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).setSupportActionBar(binding.includeToolbar.toolbarLayout)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun checkConnection() {
-        if(hasInternet(context)) {
+        if (hasInternet(context)) {
             getCharacters()
-        }else {
+        } else {
             AlertDialog.Builder(context)
                 .setTitle(getString(R.string.connection_error))
                 .setMessage(getString(R.string.verify_ethernet))
-                .setPositiveButton(getString(R.string.confirm)) { _, _ ->}
+                .setPositiveButton(getString(R.string.confirm)) { _, _ -> }
                 .show()
 
         }
@@ -68,6 +94,11 @@ class HomeFragment : BaseFragment() {
     private fun getCharacters() {
         val ts = ts()
         viewModel.getCharacters(apiKey(), hash(), ts.toLong())
+    }
+
+    private fun searchCharacter(nameStart: String) {
+        val ts = ts()
+        viewModel.searchCharacters(nameStart, apiKey(), hash(), ts.toLong())
     }
 
     private fun observeVMEvents() {
@@ -83,8 +114,24 @@ class HomeFragment : BaseFragment() {
                 Status.ERROR -> {
                     Timber.tag("Erro").i(it.error)
                     val snack = Snackbar.make(binding.root, "Not found", Snackbar.LENGTH_INDEFINITE)
-                    snack.setAction("Confirmar"){}
+                    snack.setAction("Confirmar") {}
                     snack.show()
+                }
+                Status.LOADING -> {}
+            }
+        }
+
+        viewModel.search.observe(viewLifecycleOwner) {
+            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { searchResponse ->
+                        Timber.tag("Sucesso").i(searchResponse.toString())
+                        setRecyclerView(searchResponse.data.results)
+                    }
+                }
+                Status.ERROR -> {
+                    Timber.tag("Erro").i(it.error)
                 }
                 Status.LOADING -> {}
             }
@@ -92,7 +139,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setAdapter(characterList: List<Results>) {
-        characterAdapter = CharacterAdapter(characterList,{ character ->
+        characterAdapter = CharacterAdapter(characterList, { character ->
             Timber.tag("Click").i(character.name)
             findNavController().navigate(
                 R.id.action_homeFragment_to_detailFragment2,
@@ -110,5 +157,6 @@ class HomeFragment : BaseFragment() {
             adapter = characterAdapter
         }
     }
+
 }
 

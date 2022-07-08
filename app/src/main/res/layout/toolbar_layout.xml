@@ -16,14 +16,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar">
 
-        <ImageView
-            android:id="@+id/imgLogoToolbar"
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
-            android:layout_height="?android:attr/actionBarSize"
-            android:scaleType="center"
-            android:src="@drawable/ic_logo_marvel"
-           />
-    </androidx.appcompat.widget.Toolbar>
+            android:layout_height="wrap_content"
+            android:text="MARVEL"
+            android:textColor="@color/white"
+            android:fontFamily="@font/marvel2"
+            android:textSize="32sp"
+            android:textStyle="bold"/>
 
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search_character"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/white"
+            android:visibility="gone" />
+
+    </androidx.appcompat.widget.Toolbar>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
