@@ -1,10 +1,9 @@
 package com.hectorfortuna.marvelproject.view.home.fragment.home
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -17,6 +16,7 @@ import com.hectorfortuna.marvelproject.data.network.ApiService
 import com.hectorfortuna.marvelproject.data.repository.CharacterRepository
 import com.hectorfortuna.marvelproject.data.repository.CharacterRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.FragmentHomeBinding
+import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.util.apiKey
 import com.hectorfortuna.marvelproject.util.hash
 import com.hectorfortuna.marvelproject.util.ts
@@ -49,28 +49,35 @@ class HomeFragment : BaseFragment() {
         viewModel = HomeViewModel.HomeViewModelProviderFactory(repository, Dispatchers.IO)
             .create(HomeViewModel::class.java)
 
-        binding.includeToolbar.searchCharacter.addTextChangedListener{  inputText ->
-            inputText?.let{
-                searchCharacter(it.toString())
-            }
-        }
         checkConnection()
         observeVMEvents()
+    }
+
+    private fun search(menu: Menu) {
+        val search = menu.findItem(R.id.search)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = "Pesquisar"
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                when (newText) {
+                    "" -> getCharacters()
+                    else -> searchCharacter(newText.toString())
+                }
+                return false
+            }
+
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.toolbar, menu)
+        search(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.search -> {
-                binding.includeToolbar.searchCharacter.visibility = View.VISIBLE
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun setupToolbar() {
         setHasOptionsMenu(true)
@@ -82,11 +89,17 @@ class HomeFragment : BaseFragment() {
         if (hasInternet(context)) {
             getCharacters()
         } else {
-            AlertDialog.Builder(context)
-                .setTitle(getString(R.string.connection_error))
-                .setMessage(getString(R.string.verify_ethernet))
-                .setPositiveButton(getString(R.string.confirm)) { _, _ -> }
-                .show()
+            ConfirmDialog(
+                title = "Erro de conexão",
+                message = "Tente Novamente",
+                textYes = "Tentar Novamente",
+                textNo = "Cancelar"
+            ).apply {
+                setListener {
+                    checkConnection()
+                }
+            }.show(parentFragmentManager, "Connection")
+
 
         }
     }
