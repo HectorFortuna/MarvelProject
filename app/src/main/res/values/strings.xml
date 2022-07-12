@@ -10,4 +10,14 @@
     <string name="verify_ethernet">Verique sua internet e tente novamente.</string>
     <string name="connection_error">Erro de conexão!</string>
     <string name="confirm">Confirmar</string>
+    <string name="marvel_title">MARVEL</string>
+    <string name="internet_connection_error">Erro de conexão</string>
+    <string name="try_again_message">Tente Novamente</string>
+    <string name="try_again_button">Tentar Novamente</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="search">Pesquisar</string>
+    <string name="confirmation">Confirmação</string>
+    <string name="delete_character_question">Tem certeza que gostaria de deletar este personagem?</string>
+    <string name="delete_button">Deletar</string>
+    <string name="no_button">Não</string>
 </resources>

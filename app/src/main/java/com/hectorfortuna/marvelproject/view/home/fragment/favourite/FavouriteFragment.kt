@@ -69,10 +69,10 @@ class FavouriteFragment : Fragment() {
 
     private fun deleteCharacters(results: Results) {
         ConfirmDialog(
-            title = "Confirmação",
-            message = "Tem certeza que gostaria de deletar este personagem?",
-            textYes = "Deletar",
-            textNo = "Não"
+            title = getString(R.string.confirmation),
+            message = getString(R.string.delete_character_question),
+            textYes = getString(R.string.delete_button),
+            textNo = getString(R.string.no_button)
         ).apply {
             setListener {
                 viewModel.deleteCharacters(results)

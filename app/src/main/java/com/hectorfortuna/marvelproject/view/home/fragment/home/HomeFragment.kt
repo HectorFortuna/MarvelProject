@@ -56,7 +56,7 @@ class HomeFragment : BaseFragment() {
     private fun search(menu: Menu) {
         val search = menu.findItem(R.id.search)
         val searchView = search.actionView as SearchView
-        searchView.queryHint = "Pesquisar"
+        searchView.queryHint = getString(R.string.search)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
@@ -90,10 +90,10 @@ class HomeFragment : BaseFragment() {
             getCharacters()
         } else {
             ConfirmDialog(
-                title = "Erro de conexão",
-                message = "Tente Novamente",
-                textYes = "Tentar Novamente",
-                textNo = "Cancelar"
+                title = getString(R.string.internet_connection_error),
+                message = getString(R.string.try_again_message),
+                textYes = getString(R.string.try_again_button),
+                textNo = getString(R.string.cancel_button)
             ).apply {
                 setListener {
                     checkConnection()
