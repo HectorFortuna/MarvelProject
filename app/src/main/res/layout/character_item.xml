@@ -26,7 +26,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtNameCharacterItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,6 +36,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardViewItem" />
+        app:layout_constraintTop_toBottomOf="@id/cardViewItem"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

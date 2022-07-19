@@ -20,4 +20,18 @@
     <string name="delete_character_question">Tem certeza que gostaria de deletar este personagem?</string>
     <string name="delete_button">Deletar</string>
     <string name="no_button">Não</string>
+    <string name="user_hint">Usuário</string>
+    <string name="password_hint">Senha</string>
+    <string name="button_login">LOGIN</string>
+    <string name="create_account">Crie sua conta</string>
+    <string name="next_button">Proximo</string>
+    <string name="back_button">Voltar</string>
+    <string name="confirm_email">Confirme o E-mail:</string>
+    <string name="email_text">Email:</string>
+    <string name="full_name">Nome Completo:</string>
+    <string name="confirm_password">Confirme sua senha</string>
+    <string name="password_text">Senha</string>
+    <string name="create_password">Defina sua senha</string>
+    <string name="go_to_home_button">Ir para a página inicial</string>
+    <string name="welcome_text">Seja bem-vindo(A)</string>
 </resources>

@@ -13,6 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/red_status_bar</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ShapeAppearanceOverlay.MarvelProject.Button.Cut" parent="">
+        <item name="cornerFamilyTopLeft">cut</item>
+        <item name="cornerFamilyBottomRight">cut</item>
+        <item name="cornerSizeTopLeft">12dp</item>
+        <item name="cornerSizeBottomRight">12dp</item>
+    </style>
+
     <color name="red_500">#C4372C</color>
     <color name="red_secondary">#AD0000</color>
 

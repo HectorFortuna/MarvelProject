@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.marvelproject.R
+import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.data.db.AppDatabase
 import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
@@ -50,6 +52,26 @@ class FavouriteFragment : Fragment() {
                 results.isNotEmpty() -> {
                     Timber.tag("LISTARESULT").i(results.toString())
                     setRecyclerView(results)
+                }
+                else -> {
+                    setRecyclerView(results)
+                }
+            }
+        }
+
+        viewModel.delete.observe(viewLifecycleOwner){ state->
+            when(state.status){
+                Status.SUCCESS ->{
+                    state.data?.let {
+                        Toast.makeText(requireContext(), "Personagem Deletado", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                Status.ERROR->{
+
+                }
+                Status.LOADING->{
+
                 }
             }
         }

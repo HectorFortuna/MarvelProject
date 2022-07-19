@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/black">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgDetails"
@@ -82,8 +86,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_marginTop="28dp"
-            android:ellipsize="end"
-            android:maxLines="5"
             android:text="@string/details"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -97,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#0AFFFFFF"
             android:contentDescription="@null"
             android:src="@drawable/ic_fab"
             tools:src="@drawable/ic_full_favourite"
@@ -105,4 +107,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -42,6 +42,7 @@ class CharacterAdapter(
                     .centerCrop()
                     .into(imgItem)
 
+
                 itemView.setOnClickListener {
                     itemClick.invoke(character)
                 }
@@ -54,3 +55,5 @@ class CharacterAdapter(
         }
     }
 }
+
+
