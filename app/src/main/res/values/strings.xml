@@ -34,4 +34,6 @@
     <string name="create_password">Defina sua senha</string>
     <string name="go_to_home_button">Ir para a página inicial</string>
     <string name="welcome_text">Seja bem-vindo(A)</string>
+    <string name="photo_later">Definir mais tarde</string>
+    <string name="confirm_button">CONFIRMAR</string>
 </resources>

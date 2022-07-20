@@ -4,28 +4,31 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/background_gradiant.xml" value="0.174" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/background_gradient.xml" value="0.2115" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/background_item.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_fab.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_full_favourite.xml" value="0.162" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_login_icon.xml" value="0.178" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_logo_marvel.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_marvel_studios_2016_logo_1.xml" value="0.174" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/ic_password_icon.xml" value="0.178" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/shadow.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/shape_bg.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/drawable/shape_item.xml" value="0.149" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_home.xml" value="0.25" />
-        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_main.xml" value="0.2863070539419087" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/activity_register.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/bottom_layout.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/character_detail.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/character_item.xml" value="0.25" />
-        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_account.xml" value="0.25" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_account.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_detail.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_favourite.xml" value="0.5" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_password.xml" value="0.22" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_password.xml" value="0.2" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_photo.xml" value="0.22" />
-        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_welcome.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/fragment_welcome.xml" value="0.22" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/layout/toolbar_layout.xml" value="0.25" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/menu/bottom_navigation.xml" value="0.203125" />
         <entry key="..\:/Users/hectorfortuna/AndroidStudioProjects/MarvelProject/app/src/main/res/menu/toolbar.xml" value="0.5" />

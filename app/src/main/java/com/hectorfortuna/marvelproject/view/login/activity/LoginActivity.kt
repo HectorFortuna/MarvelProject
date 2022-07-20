@@ -7,6 +7,6 @@ import com.hectorfortuna.marvelproject.R
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_account)
+        setContentView(R.layout.activity_login)
     }
 }
