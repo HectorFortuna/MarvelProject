@@ -21,6 +21,19 @@
         <item name="cornerSizeBottomRight">12dp</item>
     </style>
 
+    <style name="Theme.MarvelProject.FormatTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+    </style>
+
+    <style name="Theme.MarvelProject.FormatEditText" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/edt_background</item>
+    </style>
+
     <color name="red_500">#C4372C</color>
     <color name="red_secondary">#AD0000</color>
 
