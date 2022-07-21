@@ -9,33 +9,35 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.hectorfortuna.marvelproject.data.db.converters.Converters
 import com.hectorfortuna.marvelproject.data.model.Results
+import com.hectorfortuna.marvelproject.data.model.User
 
-@Database(entities = [Results::class], version = 1, exportSchema = false)
+@Database(entities = [Results::class, User::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun characterDao() : CharacterDAO
+    abstract fun characterDao(): CharacterDAO
 
-    companion object{
+    companion object {
         @Volatile
-        private var INSTANCE : AppDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        val MIGRATION_1_2: Migration = object : Migration(1, 2){
+        val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-            //include sql command to update database
+                database.execSQL("CREATE TABLE IF NOT EXISTS `user_table`(`email` TEXT NOT NULL, `name` TEXT NOT NULL, `password` TEXT NOT NULL, `photo` INTEGER, PRIMARY KEY(`email`))")
             }
         }
 
-        fun getDb(context: Context): AppDatabase{
+        fun getDb(context: Context): AppDatabase {
             val tempInstance = INSTANCE
-            if(tempInstance != null){
+            if (tempInstance != null) {
                 return tempInstance
             }
 
-            synchronized(this){
+            synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "appdatabase.db")
+                    "appdatabase.db"
+                )
                     .addMigrations(MIGRATION_1_2)
                     .build()
 

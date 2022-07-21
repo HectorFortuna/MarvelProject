@@ -31,6 +31,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var repository: CharacterRepository
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var binding: FragmentHomeBinding
+    private var offsetCharacters: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +52,7 @@ class HomeFragment : BaseFragment() {
 
         checkConnection()
         observeVMEvents()
+        paginationSetup()
     }
 
     private fun search(menu: Menu) {
@@ -104,9 +106,9 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun getCharacters() {
+    private fun getCharacters(limit: Int = 50, offset: Int = 0) {
         val ts = ts()
-        viewModel.getCharacters(apiKey(), hash(), ts.toLong())
+        viewModel.getCharacters(apiKey(), hash(), ts.toLong(), limit, offset)
     }
 
     private fun searchCharacter(nameStart: String) {
@@ -168,6 +170,20 @@ class HomeFragment : BaseFragment() {
         binding.rvHomeFragment.apply {
             setHasFixedSize(true)
             adapter = characterAdapter
+        }
+    }
+    private fun paginationSetup() {
+        binding.fabNext.setOnClickListener {
+            if (offsetCharacters >= 0) {
+                offsetCharacters += 50
+                getCharacters(offset = offsetCharacters)
+            }
+        }
+        binding.fabPrevious.setOnClickListener {
+            if (offsetCharacters >= 50) {
+                offsetCharacters -= 50
+                getCharacters(offset = offsetCharacters)
+            }
         }
     }
 

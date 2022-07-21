@@ -10,8 +10,8 @@ import retrofit2.http.Query
 interface Service {
     @GET("/v1/public/characters")
     suspend fun getCharacters(
-        @Query("offset") offset: Int? = 200,
-        @Query("limit") limit: Int? = 100,
+        @Query("offset") offset: Int? = 100,
+        @Query("limit") limit: Int? = 50,
         @Query("apikey") apiKey: String,
         @Query("hash") hash: String,
         @Query("ts") ts: Long
