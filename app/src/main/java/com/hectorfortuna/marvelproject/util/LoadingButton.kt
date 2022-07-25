@@ -29,7 +29,7 @@ class LoadingButton @JvmOverloads constructor(
             binding.run {
                 loadingButton.run{
                     text = label
-//                    isEnabled = false
+                    isEnabled = false
                 }
                 progressBar.run {
                     visibility = View.GONE
