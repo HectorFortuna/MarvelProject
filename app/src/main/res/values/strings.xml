@@ -37,4 +37,8 @@
     <string name="photo_later">Definir mais tarde</string>
     <string name="confirm_button">CONFIRMAR</string>
     <string name="register_text">Não possui uma conta? Registre-se</string>
+    <string name="invalid_email">Email inválido</string>
+    <string name="invalid_password">Senha inválida</string>
+    <string name="required_field">Campo obrigatório</string>
+    <string name="small_password">Senha deve possuir 8 caracteres</string>
 </resources>
