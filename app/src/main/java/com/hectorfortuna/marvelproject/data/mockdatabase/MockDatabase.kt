@@ -11,7 +11,7 @@ object MockDatabase {
 
     private fun mockUser() =
         user.run {
-            add(User("hectorfortuna@gmail.com","Hector Fortuna", "12345678",null, listOf()))
+            add(User("hectorsuarez@gmail.com","Hector Suárez", "12345678",null, listOf()))
             add(User("emersonsoares@gmail.com","Emerson Soares", "12345678",null, listOf()))
             add(User("amandaluz@gmail.com","Amanda Cristina", "12345678",null, listOf()))
             add(User("fernandaoliveira@gmail.com","Fernanda Oliveira", "12345678",null, listOf()))
