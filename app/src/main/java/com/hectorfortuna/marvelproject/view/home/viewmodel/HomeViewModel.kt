@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel
+package com.hectorfortuna.marvelproject.view.home.viewmodel
 
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(
-
     private val repository: CharacterRepository,
     val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -55,10 +54,8 @@ class HomeViewModel(
     }
 
     class HomeViewModelProviderFactory(
-
         private val repository: CharacterRepository,
         private val ioDispatcher: CoroutineDispatcher,
-
         ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {

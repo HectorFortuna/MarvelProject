@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel
+package com.hectorfortuna.marvelproject.view.detail.viewmodel
 
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State

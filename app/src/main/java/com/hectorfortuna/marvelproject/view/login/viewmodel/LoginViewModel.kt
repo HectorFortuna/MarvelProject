@@ -1,15 +1,17 @@
 package com.hectorfortuna.marvelproject.view.login.viewmodel
 
 import android.util.Patterns
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.R
+import com.hectorfortuna.marvelproject.core.State
+import com.hectorfortuna.marvelproject.data.model.User
+import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel() : ViewModel() {
+class LoginViewModel(
+    private val repository: LoginRepository
+) : ViewModel() {
 
     private val _loginFieldErrorResId = MutableLiveData<Int?>()
     val loginFieldErrorResId: LiveData<Int?> = _loginFieldErrorResId
@@ -19,6 +21,9 @@ class LoginViewModel() : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
+
+    private val _user = MutableLiveData<State<User>>()
+    val user: LiveData<State<User>> = _user
 
     private var isValid = false
 
@@ -31,8 +36,16 @@ class LoginViewModel() : ViewModel() {
 
             if(isValid){
                 _loading.value = true
-                delay(3000)
-                _loading.value = false
+                try {
+                    delay(3000)
+
+                    val response = repository.login(email, password)
+                    _user.value = State.success(response)
+                    _loading.value = false
+                } catch (e: Exception){
+                    _loading.value = false
+                    _user.value = State.error(e)
+                }
             }
         }
 
@@ -54,4 +67,15 @@ class LoginViewModel() : ViewModel() {
             }
             else -> null
         }
+
+    class LoginViewModelProviderFactory(
+        private val repository: LoginRepository
+    ): ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
+                return LoginViewModel(repository) as T
+            }
+            throw IllegalArgumentException("Unknown viewModel Class")
+        }
+    }
 }

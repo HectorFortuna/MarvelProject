@@ -30,6 +30,19 @@ class Converters {
     }
 
     @TypeConverter
+    fun fromListFavourites(listFavourites: List<Results?>): String =
+        Gson().toJson(listFavourites)
+
+    @TypeConverter
+    fun toListFavourites(string: String?): List<Results?>? {
+        if (string == null) {
+            return Collections.emptyList()
+        }
+        val listType: Type = object : TypeToken<List<Results?>?>() {}.type
+        return Gson().fromJson<List<Results?>>(string, listType)
+    }
+
+    @TypeConverter
     fun fromComics(comics: Comics): String =
         Gson().toJson(comics)
 

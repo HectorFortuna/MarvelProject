@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.login.register.fragment.welcome
+package com.hectorfortuna.marvelproject.view.register.fragment.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater

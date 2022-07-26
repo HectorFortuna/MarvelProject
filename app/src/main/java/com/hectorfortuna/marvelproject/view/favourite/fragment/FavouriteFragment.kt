@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.home.fragment.favourite
+package com.hectorfortuna.marvelproject.view.favourite.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.databinding.FragmentFavouriteBinding
 import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.view.adapter.CharacterAdapter
-import com.hectorfortuna.marvelproject.view.home.fragment.favourite.viewmodel.FavouriteViewModel
+import com.hectorfortuna.marvelproject.view.favourite.viewmodel.FavouriteViewModel
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 

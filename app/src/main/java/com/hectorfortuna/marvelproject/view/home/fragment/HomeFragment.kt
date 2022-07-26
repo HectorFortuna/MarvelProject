@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.home.fragment.home
+package com.hectorfortuna.marvelproject.view.home.fragment
 
 import android.os.Bundle
 import android.view.*
@@ -21,7 +21,7 @@ import com.hectorfortuna.marvelproject.util.apiKey
 import com.hectorfortuna.marvelproject.util.hash
 import com.hectorfortuna.marvelproject.util.ts
 import com.hectorfortuna.marvelproject.view.adapter.CharacterAdapter
-import com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel.HomeViewModel
+import com.hectorfortuna.marvelproject.view.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
@@ -52,8 +52,7 @@ class HomeFragment : BaseFragment() {
 
         checkConnection()
         observeVMEvents()
-        paginationSetup()
-    }
+        paginationSetup()    }
 
     private fun search(menu: Menu) {
         val search = menu.findItem(R.id.search)

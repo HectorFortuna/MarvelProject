@@ -9,7 +9,6 @@ data class User(
     val email: String,
     val name: String,
     val password: String,
-    val photo: Int?
-
-
+    val photo: Int?,
+    val favourites: List<Results>
 )

@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.home.fragment.favourite.viewmodel
+package com.hectorfortuna.marvelproject.view.favourite.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

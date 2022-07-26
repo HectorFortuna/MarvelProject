@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.view.home.fragment.detail
+package com.hectorfortuna.marvelproject.view.detail.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.databinding.CharacterDetailBinding
-import com.hectorfortuna.marvelproject.view.home.fragment.home.viewmodel.DetailViewModel
+import com.hectorfortuna.marvelproject.view.detail.viewmodel.DetailViewModel
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
