@@ -29,5 +29,6 @@ data class Results(
     @SerializedName("events")
     val events: Events,
     @SerializedName("urls")
-    val urls: List<Urls>
+    val urls: List<Urls>,
+    val email: String?
 ) : Serializable

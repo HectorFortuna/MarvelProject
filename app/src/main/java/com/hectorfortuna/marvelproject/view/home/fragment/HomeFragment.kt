@@ -2,6 +2,7 @@ package com.hectorfortuna.marvelproject.view.home.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
@@ -12,6 +13,7 @@ import com.hectorfortuna.marvelproject.core.BaseFragment
 import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.core.hasInternet
 import com.hectorfortuna.marvelproject.data.model.Results
+import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.network.ApiService
 import com.hectorfortuna.marvelproject.data.repository.CharacterRepository
 import com.hectorfortuna.marvelproject.data.repository.CharacterRepositoryImpl
@@ -31,6 +33,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var repository: CharacterRepository
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var user: User
+
     private var offsetCharacters: Int = 0
 
     override fun onCreateView(
@@ -50,9 +54,15 @@ class HomeFragment : BaseFragment() {
         viewModel = HomeViewModel.HomeViewModelProviderFactory(repository, Dispatchers.IO)
             .create(HomeViewModel::class.java)
 
+        activity?.let {
+            user = it.intent.getSerializableExtra("USER") as User
+        }
+        Toast.makeText(context, "Bem vindo ${user.name}", Toast.LENGTH_SHORT).show()
+
         checkConnection()
         observeVMEvents()
-        paginationSetup()    }
+        paginationSetup()
+    }
 
     private fun search(menu: Menu) {
         val search = menu.findItem(R.id.search)
@@ -69,7 +79,6 @@ class HomeFragment : BaseFragment() {
                 }
                 return false
             }
-
         })
     }
 
@@ -100,8 +109,6 @@ class HomeFragment : BaseFragment() {
                     checkConnection()
                 }
             }.show(parentFragmentManager, "Connection")
-
-
         }
     }
 
@@ -185,6 +192,5 @@ class HomeFragment : BaseFragment() {
             }
         }
     }
-
 }
 
