@@ -15,6 +15,7 @@ object MockDatabase {
             add(User("emersonsoares@gmail.com","Emerson Soares", "12345678",null))
             add(User("amandaluz@gmail.com","Amanda Cristina", "12345678",null))
             add(User("fernandaoliveira@gmail.com","Fernanda Oliveira", "12345678",null))
+            add(User("carlos@gmail.com","Carlos Henrique", "12345678",null))
         }
     @Throws(Throwable::class)
     fun mockLogin(email:String, password: String): User? {

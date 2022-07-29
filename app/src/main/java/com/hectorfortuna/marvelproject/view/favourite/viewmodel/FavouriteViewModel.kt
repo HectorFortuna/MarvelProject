@@ -19,7 +19,7 @@ class FavouriteViewModel(
     val delete : LiveData<State<Boolean>>
     get() = _delete
 
-    fun getCharacters() = repository.getAllCharacters()
+    fun getCharacters(email: String) = repository.getAllCharactersByUser(email)
 
     fun deleteCharacters(results: Results) = viewModelScope.launch {
         try {

@@ -14,6 +14,7 @@ import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.marvelproject.data.model.Results
+import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.databinding.CharacterDetailBinding
 import com.hectorfortuna.marvelproject.view.detail.viewmodel.DetailViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ class DetailFragment : Fragment() {
     lateinit var viewModel: DetailViewModel
     lateinit var repository: DatabaseRepository
     private var checkCharacter: Boolean = false
+    private lateinit var user: User
     private val dao: CharacterDAO by lazy {
         AppDatabase.getDb(requireContext()).characterDao()
     }
@@ -40,10 +42,15 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         character = arguments?.getSerializable("CHARACTER") as Results
         repository = DatabaseRepositoryImpl(dao)
+
+        activity?.let {
+            user = it.intent.getSerializableExtra("USER") as User
+        }
+
         viewModel = DetailViewModel.DetailViewModelProviderFactory(repository, Dispatchers.IO)
             .create(DetailViewModel::class.java)
 
-        viewModel.verifySavedCharacter(character.id)
+        viewModel.verifySavedCharacter(character.id, user.email)
 
         binding.run {
             setImage(imgDetails)
@@ -58,7 +65,8 @@ class DetailFragment : Fragment() {
                     fabDetails.setImageResource(R.drawable.ic_fab)
                     checkCharacter = false
                 } else {
-                    viewModel.insertCharacters(character)
+                    val favourite = character.copy(email = user.email)
+                    viewModel.insertCharacters(favourite)
                     fabDetails.setImageResource(R.drawable.ic_full_favourite)
                     checkCharacter = true
                 }

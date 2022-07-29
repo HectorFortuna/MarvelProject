@@ -17,4 +17,11 @@ class DatabaseRepositoryImpl(private val dao: CharacterDAO):DatabaseRepository {
     override suspend fun getFavouriteCharacter(characterId: Long): Results? =
         dao.getFavouriteCharacter(characterId)
 
+    override suspend fun getFavouriteCharacterByUser(characterId: Long, email: String): Results? =
+        dao.getFavouriteCharactersByUser(characterId, email)
+
+
+    override fun getAllCharactersByUser(email: String): LiveData<List<Results>> =
+        dao.getAllCharactersByUser(email)
+
 }

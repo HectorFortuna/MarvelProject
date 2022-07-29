@@ -22,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE IF NOT EXISTS `user_table`(`email` TEXT NOT NULL, `name` TEXT NOT NULL, `password` TEXT NOT NULL, `photo` INTEGER, PRIMARY KEY(`email`))")
+            //    database.execSQL("CREATE TABLE IF NOT EXISTS `user_table`(`email` TEXT NOT NULL, `name` TEXT NOT NULL, `password` TEXT NOT NULL, `photo` INTEGER, PRIMARY KEY(`email`))")
             }
         }
 

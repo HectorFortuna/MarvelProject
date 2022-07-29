@@ -14,6 +14,7 @@ import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.marvelproject.data.model.Results
+import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.databinding.FragmentFavouriteBinding
 import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.view.adapter.CharacterAdapter
@@ -24,6 +25,7 @@ import timber.log.Timber
 class FavouriteFragment : Fragment() {
     lateinit var viewModel: FavouriteViewModel
     lateinit var repository: DatabaseRepository
+    private lateinit var user: User
     private lateinit var characterAdapter: CharacterAdapter
     private val dao: CharacterDAO by lazy {
         AppDatabase.getDb(requireContext()).characterDao()
@@ -42,12 +44,17 @@ class FavouriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         repository = DatabaseRepositoryImpl(dao)
+
+        activity?.let {
+            user = it.intent.getSerializableExtra("USER") as User
+        }
+
         viewModel = FavouriteViewModel(repository, Dispatchers.IO)
         observeVMEvents()
     }
 
     private fun observeVMEvents() {
-        viewModel.getCharacters().observe(viewLifecycleOwner) { results ->
+        viewModel.getCharacters(user.email).observe(viewLifecycleOwner) { results ->
             when {
                 results.isNotEmpty() -> {
                     Timber.tag("LISTARESULT").i(results.toString())

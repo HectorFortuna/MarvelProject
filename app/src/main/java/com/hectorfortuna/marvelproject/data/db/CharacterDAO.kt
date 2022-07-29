@@ -8,7 +8,7 @@ import com.hectorfortuna.marvelproject.data.model.User
 @Dao
 interface CharacterDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCharacter(result: Results)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -25,6 +25,12 @@ interface CharacterDAO {
 
     @Query("SELECT * FROM results_table WHERE id = :characterId")
     suspend fun getFavouriteCharacter(characterId: Long): Results?
+
+    @Query("SELECT * FROM results_table WHERE email = :email")
+    fun getAllCharactersByUser(email: String): LiveData<List<Results>>
+
+    @Query("SELECT * FROM results_table WHERE id = :characterId AND email = :email")
+    fun getFavouriteCharactersByUser(characterId: Long,email: String): Results?
     
 
 }
