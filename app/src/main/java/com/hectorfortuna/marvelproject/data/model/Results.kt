@@ -1,10 +1,12 @@
 package com.hectorfortuna.marvelproject.data.model
 
+import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "results_table", primaryKeys = ["id", "email"])
+@Parcelize
 data class Results(
     @SerializedName("id")
     val id: Long,
@@ -27,6 +29,5 @@ data class Results(
     @SerializedName("events")
     val events: Events,
     @SerializedName("urls")
-    val urls: List<Urls>,
-    val email: String
-) : Serializable
+    val urls: List<Urls>
+) : Parcelable

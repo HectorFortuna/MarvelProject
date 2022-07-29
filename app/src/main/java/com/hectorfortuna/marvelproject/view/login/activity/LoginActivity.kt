@@ -42,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
 
                 viewModel.login(email, password)
             }
+            loginUserEdit.setText("hectorsuarez@gmail.com")
+            loginPasswordEdit.setText("12345678")
             loginUserEdit.addTextChangedListener(watcher)
             loginPasswordEdit.addTextChangedListener(watcher)
         }

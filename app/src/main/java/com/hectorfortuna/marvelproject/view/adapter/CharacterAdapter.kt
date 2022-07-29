@@ -4,13 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.Results
+import com.hectorfortuna.marvelproject.data.model.converterToFavorite
 import com.hectorfortuna.marvelproject.databinding.CharacterItemBinding
 
 class CharacterAdapter(
-    private val characterList: List<Results>,
-    private val itemClick: ((item: Results) -> Unit),
-    private val longClick: ((item:Results) -> Unit)? = null
+    private val results: List<Results>,
+    private val itemClick: ((item: Favorites) -> Unit),
+    private val longClick: ((item:Favorites) -> Unit)? = null
 ) :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
@@ -20,17 +22,17 @@ class CharacterAdapter(
         return CharacterViewHolder(binding, itemClick, longClick)
     }
 
-    override fun getItemCount() = characterList.count()
+    override fun getItemCount() = results.count()
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bindView(characterList[position])
+        holder.bindView(results[position])
 
     }
 
     class CharacterViewHolder(
         private val binding: CharacterItemBinding,
-        private val itemClick: (item: Results) -> Unit,
-        private val longClick: ((item: Results) -> Unit)?
+        private val itemClick: (item: Favorites) -> Unit,
+        private val longClick: ((item: Favorites) -> Unit)?
     )
         : RecyclerView.ViewHolder(binding.root) {
         fun bindView(character: Results) {
@@ -44,11 +46,11 @@ class CharacterAdapter(
 
 
                 itemView.setOnClickListener {
-                    itemClick.invoke(character)
+                    itemClick.invoke(converterToFavorite(character))
                 }
 
                 itemView.setOnLongClickListener{
-                    longClick?.invoke(character)
+                    longClick?.invoke(converterToFavorite(character))
                     return@setOnLongClickListener true
                 }
             }

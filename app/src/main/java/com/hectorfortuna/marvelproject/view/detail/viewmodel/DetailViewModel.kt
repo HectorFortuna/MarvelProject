@@ -3,10 +3,12 @@ package com.hectorfortuna.marvelproject.view.detail.viewmodel
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
+import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.Results
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class DetailViewModel(
     private val databaseRepository: DatabaseRepository,
@@ -23,7 +25,7 @@ class DetailViewModel(
     val delete : LiveData<State<Boolean>>
         get() = _delete
 
-    fun insertCharacters(result: Results) {
+    fun insertCharacters(result: Favorites) {
         viewModelScope.launch {
             try {
                 withContext(ioDispatcher) {
@@ -33,6 +35,17 @@ class DetailViewModel(
             } catch (throwable: Throwable) {
                 _response.value = State.error(throwable)
             }
+        }
+    }
+
+    fun insertFavorite(favorites: Favorites) {
+        viewModelScope.launch {
+            try {
+                databaseRepository.insertFavorite(favorites)
+            }catch (e: Exception){
+                Timber.tag("ERRO").i(e)
+            }
+
         }
     }
 
@@ -50,11 +63,11 @@ class DetailViewModel(
         }
     }
 
-    fun deleteCharacters(results: Results) = viewModelScope.launch {
+    fun deleteCharacters(favorites: Favorites) = viewModelScope.launch {
         try {
             _delete.value = State.loading(true)
             withContext(ioDispatcher) {
-                databaseRepository.deleteCharacter(results)
+                databaseRepository.deleteCharacter(favorites)
             }
             _delete.value = State.loading(false)
             _delete.value = State.success(true)

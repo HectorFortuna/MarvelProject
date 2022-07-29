@@ -13,7 +13,7 @@ import com.hectorfortuna.marvelproject.data.db.AppDatabase
 import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
-import com.hectorfortuna.marvelproject.data.model.Results
+import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.databinding.CharacterDetailBinding
 import com.hectorfortuna.marvelproject.view.detail.viewmodel.DetailViewModel
@@ -30,7 +30,7 @@ class DetailFragment : Fragment() {
     }
 
     private lateinit var binding: CharacterDetailBinding
-    private lateinit var character: Results
+    private lateinit var favorites: Favorites
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -40,7 +40,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        character = arguments?.getSerializable("CHARACTER") as Results
+        favorites = arguments?.getParcelable<Favorites>("FAVORITE") as Favorites
         repository = DatabaseRepositoryImpl(dao)
 
         activity?.let {
@@ -50,31 +50,34 @@ class DetailFragment : Fragment() {
         viewModel = DetailViewModel.DetailViewModelProviderFactory(repository, Dispatchers.IO)
             .create(DetailViewModel::class.java)
 
-        viewModel.verifySavedCharacter(character.id, user.email)
+        viewModel.verifySavedCharacter(favorites.id, user.email)
 
         binding.run {
             setImage(imgDetails)
             setImage(imgDetailsPrincipal)
 
-            txtDetails.text = character.name
-            txtDescription.text = character.description
-
-            fabDetails.setOnClickListener {
-                if (checkCharacter) {
-                    viewModel.deleteCharacters(character)
-                    fabDetails.setImageResource(R.drawable.ic_fab)
-                    checkCharacter = false
-                } else {
-                    val favourite = character.copy(email = user.email)
-                    viewModel.insertCharacters(favourite)
-                    fabDetails.setImageResource(R.drawable.ic_full_favourite)
-                    checkCharacter = true
-                }
-            }
+            txtDetails.text = favorites.name
+            txtDescription.text = favorites.description
+            setFavoriteCharacter()
         }
 
 
         observeVMEvents()
+    }
+
+    private fun CharacterDetailBinding.setFavoriteCharacter() {
+        fabDetails.setOnClickListener {
+            checkCharacter = if (checkCharacter) {
+                viewModel.deleteCharacters(favorites)
+                fabDetails.setImageResource(R.drawable.ic_fab)
+                false
+            } else {
+                val copyFavorite = favorites.copy(email = user.email)
+                viewModel.insertFavorite(copyFavorite)
+                fabDetails.setImageResource(R.drawable.ic_full_favourite)
+                true
+            }
+        }
     }
 
     private fun observeVMEvents(){
@@ -114,7 +117,7 @@ class DetailFragment : Fragment() {
 
     private fun setImage(image: AppCompatImageView) {
         Glide.with(this@DetailFragment)
-            .load("${character.thumbnail.path}.${character.thumbnail.extension}")
+            .load("${favorites.thumbnail.path}.${favorites.thumbnail.extension}")
             .centerCrop()
             .into(image)
     }
