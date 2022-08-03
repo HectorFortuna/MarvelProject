@@ -9,13 +9,14 @@ import com.hectorfortuna.marvelproject.data.db.AppDatabase
 import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepository
-import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepositoryMock
+import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.ActivityLoginBinding
 import com.hectorfortuna.marvelproject.util.Watcher
 import com.hectorfortuna.marvelproject.util.setError
 import com.hectorfortuna.marvelproject.util.toast
 import com.hectorfortuna.marvelproject.view.home.activity.HomeActivity
 import com.hectorfortuna.marvelproject.view.login.viewmodel.LoginViewModel
+import com.hectorfortuna.marvelproject.view.register.activity.RegisterActivity
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
@@ -29,25 +30,35 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        repository = LoginRepositoryMock()
+        repository = LoginRepositoryImpl(dao)
         viewModel = LoginViewModel.LoginViewModelProviderFactory(repository)
             .create(LoginViewModel::class.java)
 
         observeVMEvents()
 
         binding.run {
-            loginButton.setOnClickListener {
-                val email = binding.loginUserEdit.text.toString()
-                val password = binding.loginPasswordEdit.text.toString()
-
-                viewModel.login(email, password)
-            }
-            loginUserEdit.setText("hectorsuarez@gmail.com")
-            loginPasswordEdit.setText("12345678")
+            onClickLoginButton()
+            goToRegisterActivity()
             loginUserEdit.addTextChangedListener(watcher)
             loginPasswordEdit.addTextChangedListener(watcher)
+
         }
     }
+
+    private fun ActivityLoginBinding.goToRegisterActivity() {
+        loginRegisterButton.setOnClickListener {
+            goTo(null, RegisterActivity::class.java)
+        }
+    }
+
+    private fun ActivityLoginBinding.onClickLoginButton() {
+        loginButton.setOnClickListener {
+            val email = binding.loginUserEdit.text.toString()
+            val password = binding.loginPasswordEdit.text.toString()
+                viewModel.login(email, password)
+            }
+        }
+
 
     private val watcher = Watcher {
         binding.loginButton.isEnabled = binding.loginUserEdit.text.toString().isNotEmpty() &&
@@ -56,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeVMEvents() {
         viewModel.loginFieldErrorResId.observe(this) {
-            binding.loginUsernameLayout.setError(this@LoginActivity, it)
+            binding.loginUserLayout.setError(this@LoginActivity, it)
         }
         viewModel.passwordFieldErrorResId.observe(this) {
             binding.loginPasswordLayout.setError(this@LoginActivity, it)

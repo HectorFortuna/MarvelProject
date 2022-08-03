@@ -44,7 +44,7 @@ class DetailFragment : Fragment() {
         repository = DatabaseRepositoryImpl(dao)
 
         activity?.let {
-            user = it.intent.getSerializableExtra("USER") as User
+            user = it.intent.getParcelableExtra<User>("USER") as User
         }
 
         viewModel = DetailViewModel.DetailViewModelProviderFactory(repository, Dispatchers.IO)
@@ -60,8 +60,6 @@ class DetailFragment : Fragment() {
             txtDescription.text = favorites.description
             setFavoriteCharacter()
         }
-
-
         observeVMEvents()
     }
 

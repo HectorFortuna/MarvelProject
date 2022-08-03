@@ -12,7 +12,6 @@ import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.BaseFragment
 import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.core.hasInternet
-import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.network.ApiService
@@ -56,7 +55,7 @@ class HomeFragment : BaseFragment() {
             .create(HomeViewModel::class.java)
 
         activity?.let {
-            user = it.intent.getSerializableExtra("USER") as User
+            user = it.intent.getParcelableExtra<User>("USER") as User
         }
         Toast.makeText(context, "Bem vindo ${user.name}", Toast.LENGTH_SHORT).show()
 

@@ -41,4 +41,6 @@
     <string name="invalid_password">Senha inválida</string>
     <string name="required_field">Campo obrigatório</string>
     <string name="small_password">Senha deve possuir 8 caracteres</string>
+    <string name="valid_name">Digite um nome válido</string>
+    <string name="passwordsArentTheSame">Senhas não são iguais</string>
 </resources>

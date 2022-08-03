@@ -48,7 +48,7 @@ class FavouriteFragment : Fragment() {
         repository = DatabaseRepositoryImpl(dao)
 
         activity?.let {
-            user = it.intent.getSerializableExtra("USER") as User
+            user = it.intent.getParcelableExtra<User>("USER") as User
         }
 
         viewModel = FavouriteViewModel(repository, Dispatchers.IO)

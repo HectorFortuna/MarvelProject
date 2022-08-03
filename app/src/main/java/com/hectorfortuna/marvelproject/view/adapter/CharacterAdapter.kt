@@ -12,7 +12,7 @@ import com.hectorfortuna.marvelproject.databinding.CharacterItemBinding
 class CharacterAdapter(
     private val results: List<Results>,
     private val itemClick: ((item: Favorites) -> Unit),
-    private val longClick: ((item:Favorites) -> Unit)? = null
+    private val longClick: ((item: Favorites) -> Unit)? = null
 ) :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 

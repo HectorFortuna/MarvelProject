@@ -1,5 +1,6 @@
 package com.hectorfortuna.marvelproject.data.db.converters
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -28,6 +29,14 @@ class Converters {
         val listType: Type = object : TypeToken<List<Urls?>?>() {}.type
         return Gson().fromJson<List<Urls?>>(string, listType)
     }
+
+    @TypeConverter
+    fun fromUri(uri: Uri): String =
+        uri.toString()
+
+    @TypeConverter
+    fun toUri(string: String): Uri =
+        Uri.parse(string)
 
     @TypeConverter
     fun fromListFavourites(listFavourites: List<Results?>): String =

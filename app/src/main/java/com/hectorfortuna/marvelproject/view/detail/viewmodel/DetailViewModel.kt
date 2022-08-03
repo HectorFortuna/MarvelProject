@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.model.Favorites
-import com.hectorfortuna.marvelproject.data.model.Results
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.databinding.LoadingButtonBinding
 
@@ -34,6 +35,7 @@ class LoadingButton @JvmOverloads constructor(
                 progressBar.run {
                     visibility = View.GONE
                 }
+                loadingButton.text = if(progressBar.isVisible) "" else loadingButton.text
             }
 
             attributes.recycle()
@@ -44,7 +46,7 @@ class LoadingButton @JvmOverloads constructor(
         binding.run {
             progressBar.visibility = if(enabled) View.VISIBLE else View.GONE
             loadingButton.isEnabled = enabled
-            loadingButton.text = if(enabled) "" else label
+            loadingButton.text = if(progressBar.isVisible) "" else label
         }
     }
 

@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/login_logo">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_username_layout"
+            android:id="@+id/login_user_layout"
             style="@style/Theme.MarvelProject.FormatTextInput"
             app:endIconMode="clear_text"
             app:errorEnabled="false"
