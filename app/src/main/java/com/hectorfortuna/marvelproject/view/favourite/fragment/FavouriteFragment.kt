@@ -106,7 +106,8 @@ class FavouriteFragment : Fragment() {
             textNo = getString(R.string.no_button)
         ).apply {
             setListener {
-                viewModel.deleteCharacters(favorites)
+                val newFavourites = favorites.copy(email = user.email)
+                viewModel.deleteCharacters(newFavourites)
             }
         }.show(parentFragmentManager, "Dialog")
     }

@@ -40,7 +40,7 @@ class PasswordFragment : Fragment() {
             val password = binding.passwordEdit.text.toString()
             val passwordConfirmation = binding.passwordConfirmEdit.text.toString()
 
-            if (viewModel.checkIfPasswordAreValid(password, passwordConfirmation)) {
+            if (viewModel.checkIfPasswordAreValid(password, passwordConfirmation) ) {
                 navigateToNextStepWithValidPassword(password)
             }
         }

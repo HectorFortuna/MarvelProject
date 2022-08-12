@@ -64,13 +64,9 @@ class PhotoFragment : Fragment() {
 
     private fun createUserWithoutPhoto() {
         binding.registerChooseLater.setOnClickListener {
-            val userWithoutPhoto = User(
-                email = user.email,
-                name = user.name,
-                password = user.password,
-                photo = uriImage
-            )
-            viewModel.insertNewUserOnDatabase(userWithoutPhoto)
+            uriImage = Uri.parse("")
+            val finalUser = user.copy(photo = uriImage)
+            viewModel.insertNewUserOnDatabase(finalUser)
         }
     }
 
@@ -83,15 +79,25 @@ class PhotoFragment : Fragment() {
     private fun gallery() = getContent.launch("image/*")
 
     private fun setImageFromGallery(uri: Uri) {
-            binding.registerImage.setImageURI(uri)
-            uriImage = uri
+        binding.registerImage.setImageURI(uri)
+        uriImage = uri
     }
 
     private fun insertUserOnDatabase() {
-        binding.nextButtonPhoto.setOnClickListener {
+        if (uriImage != null) {
+            binding.nextButtonPhoto.setOnClickListener {
+                val finalUser = user.copy(photo = uriImage)
+                viewModel.insertNewUserOnDatabase(finalUser)
+            }
+        } else {
+            uriImage = Uri.parse("")
             val finalUser = user.copy(photo = uriImage)
             viewModel.insertNewUserOnDatabase(finalUser)
         }
+    }
+
+    private fun makeUserWithOrWithoutPhoto(user: User) {
+
     }
 
     private fun observeVMEvents() {

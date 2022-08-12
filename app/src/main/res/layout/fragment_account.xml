@@ -52,7 +52,7 @@
                 style="@style/Theme.MarvelProject.FormatEditText"
                 android:drawablePadding="8dp"
                 android:hint="@string/full_name"
-                android:textAllCaps="true" />
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +68,7 @@
                 style="@style/Theme.MarvelProject.FormatEditText"
                 android:drawablePadding="8dp"
                 android:hint="@string/email_text"
-                android:textAllCaps="true" />
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +83,7 @@
                 android:id="@+id/email_confirmation_edit"
                 style="@style/Theme.MarvelProject.FormatEditText"
                 android:hint="@string/confirm_email"
-                android:textAllCaps="true" />
+                 />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

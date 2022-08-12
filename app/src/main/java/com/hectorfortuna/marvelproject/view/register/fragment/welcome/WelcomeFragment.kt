@@ -20,19 +20,28 @@ class WelcomeFragment : Fragment() {
     ): View? {
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
         return binding.root
+        goToHomePage()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = arguments?.getParcelable<User>("REGISTER_USER") as User
-        binding.welcome.setText("SEJA BEM VINDO(A), ${user.name}")
-        binding.goToHomeButton.setOnClickListener {
-            goToHomePage()
-        }
+        goToHomePage()
+        welcomeWith(user.name)
+
     }
 
-    private fun goToHomePage(){
-        val intent = Intent(context, LoginActivity::class.java)
-        startActivity(intent)
+    private fun goToHomePage() {
+        binding.goToHomeButton.setOnClickListener {
+
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
+    private fun welcomeWith(username: String){
+        val welcomeName = "SEJA BEM VINDO(A), $username!"
+        binding.welcome.text = welcomeName
+    }
+
+
 }
