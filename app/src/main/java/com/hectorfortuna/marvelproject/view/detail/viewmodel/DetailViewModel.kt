@@ -20,8 +20,11 @@ class DetailViewModel(
     private val _response = MutableLiveData<State<Boolean>>()
     val response: LiveData<State<Boolean>> = _response
 
-    private val _categoryResponse = MutableLiveData<State<ComicsResponse>>()
-    val categoryResponse: LiveData<State<ComicsResponse>> = _categoryResponse
+    private val _comicsResponse = MutableLiveData<State<ComicsResponse>>()
+    val comicsResponse: LiveData<State<ComicsResponse>> = _comicsResponse
+
+    private val _seriesResponse = MutableLiveData<State<ComicsResponse>>()
+    val seriesResponse: LiveData<State<ComicsResponse>> = _seriesResponse
 
     private val _verifyCharacter = MutableLiveData<State<Boolean>>()
     val verifyCharacter: LiveData<State<Boolean>> = _verifyCharacter
@@ -31,19 +34,36 @@ class DetailViewModel(
         get() = _delete
 
 
-    fun getCategory(apikey: String, hash: String, ts: Long, id: Long, category: String) {
+    fun getCategory(apikey: String, hash: String, ts: Long, id: Long) {
         viewModelScope.launch {
             try {
-                _categoryResponse.value = State.loading(true)
+                _comicsResponse.value = State.loading(true)
                 withContext(ioDispatcher) {
-                    categoryRepository.getCategory(apikey, hash, ts, id, category)
+                    categoryRepository.getComics(apikey, hash, ts, id)
                 }.let {
-                    _categoryResponse.value = State.loading(false)
-                    _categoryResponse.value = State.success(it)
+                    _comicsResponse.value = State.loading(false)
+                    _comicsResponse.value = State.success(it)
                 }
             } catch (e: Exception) {
                 Timber.tag("Error").e(e)
-                _categoryResponse.value = State.error(e)
+                _comicsResponse.value = State.error(e)
+            }
+        }
+    }
+
+    fun getSeries(apikey: String, hash: String, ts: Long, id: Long) {
+        viewModelScope.launch {
+            try {
+                _seriesResponse.value = State.loading(true)
+                withContext(ioDispatcher) {
+                    categoryRepository.getSeries(apikey, hash, ts, id)
+                }.let {
+                    _seriesResponse.value = State.loading(false)
+                    _seriesResponse.value = State.success(it)
+                }
+            } catch (e: Exception) {
+                Timber.tag("Error").e(e)
+                _seriesResponse.value = State.error(e)
             }
         }
     }

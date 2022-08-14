@@ -1,19 +1,22 @@
 package com.hectorfortuna.marvelproject.view.detail.adapter
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.bumptech.glide.request.target.ViewTarget
 import com.hectorfortuna.marvelproject.data.model.comics.Result
 import com.hectorfortuna.marvelproject.databinding.ItemCarouselBinding
 import kotlin.math.roundToInt
 
 class CarouselAdapter(
-    private val imageList: List<Result>,
+    private val itemList: List<Result>
 ) : RecyclerView.Adapter<CarouselAdapter.MyViewHolder>() {
 
     private var hasInitParentDimensions = false
@@ -30,7 +33,7 @@ class CarouselAdapter(
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val category = imageList[position]
+        val category = itemList[position]
 
         holder.run {
             layoutParamsConfiguration(category)
@@ -38,35 +41,33 @@ class CarouselAdapter(
         }
     }
 
-    override fun getItemCount(): Int = imageList.count()
+    override fun getItemCount(): Int = itemList.count()
 
     class MyViewHolder(
         private val binding: ItemCarouselBinding
-        ) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bindView(comics: Result) {
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bindView(itemCategory: Result) {
             binding.run {
-                var image = "${comics.thumbnail.path}.${comics.thumbnail.extension}"
+                setCategoryImage(itemCategory)
+            }
+        }
 
-                if (image == "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
-                    image = "https://feb.kuleuven.be/drc/LEER/visiting-scholars-1/image-not-available.jpg"
-                    Glide.with(itemView)
-                        .load(image)
-                        .transition(withCrossFade())
-                        .transform(
-                            FitCenter()
-                        )
-                        .into(imageCarousel)
-                }else {
-                    Glide.with(itemView)
-                        .load("${comics.thumbnail.path}.${comics.thumbnail.extension}")
-                        .transition(withCrossFade())
-                        .transform(
-                            FitCenter()
-                        )
-                        .into(imageCarousel)
-                }
+        private fun ItemCarouselBinding.setCategoryImage(comics: Result): ViewTarget<ImageView, Drawable> {
 
+            var image = "${comics.thumbnail.path}.${comics.thumbnail.extension}"
+            val notAvailableDefault =
+                "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
+            val newNotAvailable =
+                "https://feb.kuleuven.be/drc/LEER/visiting-scholars-1/image-not-available.jpg"
+
+            return if (image == notAvailableDefault) {
+                image = newNotAvailable
+                Glide.with(itemView).load(image).transition(withCrossFade()).transform(FitCenter())
+                    .into(imageCarousel)
+            } else {
+                Glide.with(itemView)
+                    .load("${comics.thumbnail.path}.${comics.thumbnail.extension}")
+                    .transition(withCrossFade()).transform(FitCenter()).into(imageCarousel)
             }
         }
     }
@@ -77,6 +78,15 @@ class CarouselAdapter(
             maxImageHeight = parent.height
             maxImageAspectRatio = maxImageWidth.toFloat() / maxImageHeight.toFloat()
             hasInitParentDimensions = true
+        }
+    }
+
+    private fun MyViewHolder.scrollToItemClicked(
+        position: Int
+    ) {
+        itemView.setOnClickListener {
+            val rv = itemView.parent as RecyclerView
+            rv.smoothScrollToCenteredPosition(position)
         }
     }
 
@@ -93,16 +103,6 @@ class CarouselAdapter(
         smoothScroller.targetPosition = position
         layoutManager?.startSmoothScroll(smoothScroller)
     }
-
-    private fun MyViewHolder.scrollToItemClicked(
-        position: Int
-    ) {
-        itemView.setOnClickListener {
-            val rv = itemView.parent as RecyclerView
-            rv.smoothScrollToCenteredPosition(position)
-        }
-    }
-
 
     private fun MyViewHolder.layoutParamsConfiguration(
         comics: Result
@@ -124,5 +124,4 @@ class CarouselAdapter(
         }
         return targetImageWidth
     }
-
 }

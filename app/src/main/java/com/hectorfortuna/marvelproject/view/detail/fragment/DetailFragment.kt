@@ -15,7 +15,6 @@ import com.hectorfortuna.marvelproject.data.db.AppDatabase
 import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
-import com.hectorfortuna.marvelproject.data.model.Comics
 import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.model.comics.Result
@@ -34,21 +33,20 @@ import com.hectorfortuna.marvelproject.view.detail.viewmodel.DetailViewModel
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
-
 class DetailFragment : Fragment() {
-    lateinit var viewModel: DetailViewModel
-    lateinit var repository: DatabaseRepository
-    lateinit var categoryRepository: CategoryRepository
-    private var checkCharacter: Boolean = false
+    private lateinit var viewModel: DetailViewModel
+    private lateinit var repository: DatabaseRepository
+    private lateinit var categoryRepository: CategoryRepository
     private lateinit var snapHelper: SnapHelper
     private lateinit var carouselAdapter: CarouselAdapter
     private lateinit var binding: CharacterDetailBinding
+    private lateinit var result: com.hectorfortuna.marvelproject.data.model.comics.Result
     private lateinit var favorite: Favorites
     private lateinit var user: User
+    private var checkCharacter: Boolean = false
     private val dao: CharacterDAO by lazy {
         AppDatabase.getDb(requireContext()).characterDao()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,13 +69,14 @@ class DetailFragment : Fragment() {
         getUserByIntent()
 
         viewModel.verifySavedCharacter(favorite.id, user.email)
-        getCategory(id = favorite.id, category = "comics")
+        getCategory(id = favorite.id)
+        getSeries(id = favorite.id)
 
         binding.run {
-            setImage(imgDetailsPrincipal)
+            setImage(imgDetail)
 
-            txtDetails.text = favorite.name
-            txtDescription.text = favorite.description
+            detailsTitle.text = favorite.name
+            detailsDescription.text = favorite.description
 
             setFavoriteCharacter()
         }
@@ -102,15 +101,20 @@ class DetailFragment : Fragment() {
             } else {
                 val copyFavorite = favorite.copy(email = user.email)
                 viewModel.insertFavorite(copyFavorite)
-                fabDetails.setImageResource(R.drawable.ic_favorite)
+                fabDetails.setImageResource(R.drawable.ic_fab)
                 true
             }
         }
     }
 
-    private fun getCategory(id: Long, category: String) {
+    private fun getCategory(id: Long){
         val ts = ts()
-        viewModel.getCategory(apiKey(), hash(ts), ts.toLong(), id, category)
+        viewModel.getCategory(apiKey(), hash(ts), ts.toLong(), id)
+    }
+
+    private fun getSeries(id: Long){
+        val ts = ts()
+        viewModel.getSeries(apiKey(), hash(ts), ts.toLong(), id)
     }
 
     private fun observeVMEvents() {
@@ -127,11 +131,24 @@ class DetailFragment : Fragment() {
                 Status.LOADING -> {}
             }
         }
-        viewModel.categoryResponse.observe(viewLifecycleOwner) {
+        viewModel.comicsResponse.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { category ->
                         setRecycler(category.data.results)
+                    }
+                }
+                Status.ERROR -> {
+                    Timber.tag("Error").i(it.error)
+                }
+                Status.LOADING -> {}
+            }
+        }
+        viewModel.seriesResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { category ->
+                        setRecyclerSeries(category.data.results)
                     }
                 }
                 Status.ERROR -> {
@@ -162,21 +179,40 @@ class DetailFragment : Fragment() {
         carouselAdapter = CarouselAdapter(list)
     }
 
-
     private fun setRecycler(list: List<Result>) {
         setAdapter(list)
         snapHelper = PagerSnapHelper()
 
-        binding.imgPoster.apply {
-            adapter = carouselAdapter
-            layoutManager = ProminentLayoutManager(context)
-            setItemViewCacheSize(4)
-            val spacing = resources.getDimensionPixelSize(R.dimen.carousel_spacing)
-            addItemDecoration(LinearHorizontalSpacingDecoration(spacing))
-            addItemDecoration(BoundsOffsetDecoration())
+        binding.run {
+            recyclerCategory.apply {
+                adapter = carouselAdapter
+                layoutManager = ProminentLayoutManager(context)
+                setItemViewCacheSize(4)
+                val spacing = resources.getDimensionPixelSize(R.dimen.carousel_spacing)
+                addItemDecoration(LinearHorizontalSpacingDecoration(spacing))
+                addItemDecoration(BoundsOffsetDecoration())
+            }
         }
 
-        snapHelper.attachToRecyclerView(binding.imgPoster)
+        snapHelper.attachToRecyclerView(binding.recyclerCategory)
+    }
+
+    private fun setRecyclerSeries(list: List<Result>){
+        setAdapter(list)
+        snapHelper = PagerSnapHelper()
+
+        binding.run {
+            recyclerCategorySeries.apply {
+                adapter = carouselAdapter
+                layoutManager = ProminentLayoutManager(context)
+                setItemViewCacheSize(4)
+                val spacing = resources.getDimensionPixelSize(R.dimen.carousel_spacing)
+                addItemDecoration(LinearHorizontalSpacingDecoration(spacing))
+                addItemDecoration(BoundsOffsetDecoration())
+            }
+        }
+
+        snapHelper.attachToRecyclerView(binding.recyclerCategorySeries)
     }
 
     private fun setImage(image: AppCompatImageView) {

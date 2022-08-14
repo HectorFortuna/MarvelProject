@@ -6,5 +6,5 @@ data class Thumbnail(
     val width: Int,
     val height: Int
 ){
-    val aspectRatio: Float get() = 0.5f
+    val aspectRatio: Float get() = 1f
 }

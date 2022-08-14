@@ -20,9 +20,16 @@ interface Service {
         @Query("offset") offset: Int
     ): CharacterResponse
 
-    @GET("v1/public/characters/{id}/{category}")
+    @GET("v1/public/characters/{id}/comics")
     suspend fun getComics(
-        @Path("category") category: String,
+        @Path("id") id: Long,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("ts") ts: Long
+    ): ComicsResponse
+
+    @GET("v1/public/characters/{id}/series")
+    suspend fun getSeries(
         @Path("id") id: Long,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
