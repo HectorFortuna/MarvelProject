@@ -27,6 +27,7 @@ class CharacterAdapter(
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.bindView(results[position])
 
+
     }
 
     class CharacterViewHolder(

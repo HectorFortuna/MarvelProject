@@ -8,8 +8,8 @@ import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.data.db.AppDatabase
 import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepository
-import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepositoryImpl
+import com.hectorfortuna.marvelproject.data.repository.login.LoginRepository
+import com.hectorfortuna.marvelproject.data.repository.login.LoginRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.ActivityLoginBinding
 import com.hectorfortuna.marvelproject.util.Watcher
 import com.hectorfortuna.marvelproject.util.setError

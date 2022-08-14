@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.data.repository.loginrepository
+package com.hectorfortuna.marvelproject.data.repository.login
 
 import com.hectorfortuna.marvelproject.data.mockdatabase.MockDatabase
 import com.hectorfortuna.marvelproject.data.model.User

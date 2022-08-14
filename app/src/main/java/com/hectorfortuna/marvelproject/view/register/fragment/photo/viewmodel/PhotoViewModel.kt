@@ -3,7 +3,7 @@ package com.hectorfortuna.marvelproject.view.register.fragment.photo.viewmodel
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.repository.registerrepository.RegisterRepository
+import com.hectorfortuna.marvelproject.data.repository.register.RegisterRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

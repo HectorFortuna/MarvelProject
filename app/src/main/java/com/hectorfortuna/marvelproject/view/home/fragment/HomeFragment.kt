@@ -15,8 +15,8 @@ import com.hectorfortuna.marvelproject.core.hasInternet
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.network.ApiService
-import com.hectorfortuna.marvelproject.data.repository.CharacterRepository
-import com.hectorfortuna.marvelproject.data.repository.CharacterRepositoryImpl
+import com.hectorfortuna.marvelproject.data.repository.character.CharacterRepository
+import com.hectorfortuna.marvelproject.data.repository.character.CharacterRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.FragmentHomeBinding
 import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.util.apiKey
@@ -114,12 +114,12 @@ class HomeFragment : BaseFragment() {
 
     private fun getCharacters(limit: Int = 50, offset: Int = 0) {
         val ts = ts()
-        viewModel.getCharacters(apiKey(), hash(), ts.toLong(), limit, offset)
+        viewModel.getCharacters(apiKey(), hash(ts), ts.toLong(), limit, offset)
     }
 
     private fun searchCharacter(nameStart: String) {
         val ts = ts()
-        viewModel.searchCharacters(nameStart, apiKey(), hash(), ts.toLong())
+        viewModel.searchCharacters(nameStart, apiKey(), hash(ts), ts.toLong())
     }
 
     private fun observeVMEvents() {

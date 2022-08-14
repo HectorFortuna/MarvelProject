@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.repository.loginrepository.LoginRepository
+import com.hectorfortuna.marvelproject.data.repository.login.LoginRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

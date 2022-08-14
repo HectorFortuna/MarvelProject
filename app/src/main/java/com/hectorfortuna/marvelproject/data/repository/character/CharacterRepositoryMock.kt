@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.data.repository
+package com.hectorfortuna.marvelproject.data.repository.character
 
 import com.google.gson.Gson
 import com.hectorfortuna.marvelproject.data.model.CharacterResponse

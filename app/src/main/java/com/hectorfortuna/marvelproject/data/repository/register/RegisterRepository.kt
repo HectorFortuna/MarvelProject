@@ -1,4 +1,4 @@
-package com.hectorfortuna.marvelproject.data.repository.registerrepository
+package com.hectorfortuna.marvelproject.data.repository.register
 
 import com.hectorfortuna.marvelproject.data.model.User
 

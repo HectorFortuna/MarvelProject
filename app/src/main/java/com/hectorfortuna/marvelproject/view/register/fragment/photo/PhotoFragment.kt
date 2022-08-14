@@ -14,8 +14,8 @@ import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.data.db.AppDatabase
 import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.repository.registerrepository.RegisterRepository
-import com.hectorfortuna.marvelproject.data.repository.registerrepository.RegisterRepositoryImpl
+import com.hectorfortuna.marvelproject.data.repository.register.RegisterRepository
+import com.hectorfortuna.marvelproject.data.repository.register.RegisterRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.FragmentPhotoBinding
 import com.hectorfortuna.marvelproject.view.register.fragment.photo.viewmodel.PhotoViewModel
 import kotlinx.coroutines.Dispatchers

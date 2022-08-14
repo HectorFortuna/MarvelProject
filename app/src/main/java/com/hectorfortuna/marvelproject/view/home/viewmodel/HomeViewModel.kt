@@ -3,7 +3,7 @@ package com.hectorfortuna.marvelproject.view.home.viewmodel
 import androidx.lifecycle.*
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.model.CharacterResponse
-import com.hectorfortuna.marvelproject.data.repository.CharacterRepository
+import com.hectorfortuna.marvelproject.data.repository.character.CharacterRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
