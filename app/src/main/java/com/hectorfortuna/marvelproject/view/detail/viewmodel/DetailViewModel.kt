@@ -1,19 +1,26 @@
 package com.hectorfortuna.marvelproject.view.detail.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
 import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.comics.ComicsResponse
 import com.hectorfortuna.marvelproject.data.repository.comics.CategoryRepository
+import com.hectorfortuna.marvelproject.di.qualifier.Io
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
-class DetailViewModel(
+@HiltViewModel
+class DetailViewModel @Inject constructor(
     private val databaseRepository: DatabaseRepository,
-    private val ioDispatcher: CoroutineDispatcher,
+    @Io private val ioDispatcher: CoroutineDispatcher,
     private var categoryRepository: CategoryRepository
 ) : ViewModel() {
 
@@ -103,19 +110,6 @@ class DetailViewModel(
         } catch (e: Exception) {
             _delete.value = State.loading(false)
             _delete.value = State.error(e)
-        }
-    }
-
-    class DetailViewModelProviderFactory(
-        private val repository: DatabaseRepository,
-        private val ioDispatcher: CoroutineDispatcher,
-        private val categoryRepository: CategoryRepository
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
-                return DetailViewModel(repository, ioDispatcher, categoryRepository) as T
-            }
-            throw IllegalArgumentException("Unknown viewModel Class")
         }
     }
 }

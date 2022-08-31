@@ -16,7 +16,8 @@ import com.hectorfortuna.marvelproject.databinding.ItemCarouselBinding
 import kotlin.math.roundToInt
 
 class CarouselAdapter(
-    private val itemList: List<Result>
+    private val itemList: List<Result>,
+    private val itemClick: (item: Result) -> Unit
 ) : RecyclerView.Adapter<CarouselAdapter.MyViewHolder>() {
 
     private var hasInitParentDimensions = false
@@ -28,7 +29,7 @@ class CarouselAdapter(
         setParentDimensions(parent)
         val view = LayoutInflater.from(parent.context)
         val binding = ItemCarouselBinding.inflate(view, parent, false)
-        return MyViewHolder(binding)
+        return MyViewHolder(binding, itemClick)
     }
 
 
@@ -38,13 +39,19 @@ class CarouselAdapter(
         holder.run {
             layoutParamsConfiguration(category)
             scrollToItemClicked(position)
+            itemView.setOnClickListener {
+                val recyclerView  = itemView.parent as RecyclerView
+                recyclerView.smoothScrollToCenteredPosition(position)
+                itemClick.invoke(category)
+            }
         }
     }
 
     override fun getItemCount(): Int = itemList.count()
 
     class MyViewHolder(
-        private val binding: ItemCarouselBinding
+        private val binding: ItemCarouselBinding,
+        private val itemClick: (item: Result) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(itemCategory: Result) {
             binding.run {

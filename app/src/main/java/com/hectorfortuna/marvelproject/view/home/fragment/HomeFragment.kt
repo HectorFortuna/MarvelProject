@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -14,9 +15,6 @@ import com.hectorfortuna.marvelproject.core.Status
 import com.hectorfortuna.marvelproject.core.hasInternet
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.network.ApiService
-import com.hectorfortuna.marvelproject.data.repository.character.CharacterRepository
-import com.hectorfortuna.marvelproject.data.repository.character.CharacterRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.FragmentHomeBinding
 import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.util.apiKey
@@ -24,13 +22,13 @@ import com.hectorfortuna.marvelproject.util.hash
 import com.hectorfortuna.marvelproject.util.ts
 import com.hectorfortuna.marvelproject.view.adapter.CharacterAdapter
 import com.hectorfortuna.marvelproject.view.home.viewmodel.HomeViewModel
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment() {
+    private val viewModel by viewModels<HomeViewModel>()
 
-    private lateinit var viewModel: HomeViewModel
-    private lateinit var repository: CharacterRepository
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var binding: FragmentHomeBinding
     private lateinit var user: User
@@ -50,9 +48,6 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         Timber.tag("CONNECTION").i(hasInternet(context).toString())
 
-        repository = CharacterRepositoryImpl(ApiService.service)
-        viewModel = HomeViewModel.HomeViewModelProviderFactory(repository, Dispatchers.IO)
-            .create(HomeViewModel::class.java)
 
         activity?.let {
             user = it.intent.getParcelableExtra<User>("USER") as User
@@ -177,6 +172,7 @@ class HomeFragment : BaseFragment() {
             adapter = characterAdapter
         }
     }
+
     private fun paginationSetup() {
         binding.fabNext.setOnClickListener {
             if (offsetCharacters >= 0) {

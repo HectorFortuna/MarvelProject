@@ -3,8 +3,9 @@ package com.hectorfortuna.marvelproject.view.register.fragment.password.viewmode
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.hectorfortuna.marvelproject.R
+import dagger.hilt.android.lifecycle.HiltViewModel
+
 
 class PasswordViewModel: ViewModel() {
 
@@ -40,13 +41,4 @@ class PasswordViewModel: ViewModel() {
         if(passwordConfirmation != password){
             R.string.passwordsArentTheSame
         } else null
-
-    class PasswordViewModelProviderFactory : ViewModelProvider.Factory{
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(PasswordViewModel::class.java)) {
-                return PasswordViewModel() as T
-            }
-            throw IllegalArgumentException("Unknown viewModel class")
-        }
-    }
 }

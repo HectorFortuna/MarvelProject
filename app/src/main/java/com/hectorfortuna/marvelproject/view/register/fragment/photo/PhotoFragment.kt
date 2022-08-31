@@ -8,41 +8,31 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.Status
-import com.hectorfortuna.marvelproject.data.db.AppDatabase
-import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.repository.register.RegisterRepository
-import com.hectorfortuna.marvelproject.data.repository.register.RegisterRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.FragmentPhotoBinding
 import com.hectorfortuna.marvelproject.view.register.fragment.photo.viewmodel.PhotoViewModel
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PhotoFragment : Fragment() {
     private lateinit var binding: FragmentPhotoBinding
-    private lateinit var viewModel: PhotoViewModel
-    private lateinit var repository: RegisterRepository
+    private val viewModel by viewModels<PhotoViewModel>()
     private lateinit var user: User
     private var uriImage: Uri? = null
 
-    private val dao: CharacterDAO by lazy {
-        AppDatabase.getDb(requireContext()).characterDao()
-    }
-
-    private var getContent =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let {
-                setImageFromGallery(it)
-            }
+    private var getContent = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
+        uri?.let {
+            setImageFromGallery(it)
         }
-
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -51,23 +41,11 @@ class PhotoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         user = arguments?.getParcelable<User>("REGISTER_USER") as User
 
-        repository = RegisterRepositoryImpl(dao)
-        viewModel = PhotoViewModel.PhotoViewModelProvider(repository, Dispatchers.IO)
-            .create(PhotoViewModel::class.java)
-
 
         clickToChoosePhoto()
-        insertUserOnDatabase()
-        createUserWithoutPhoto()
+        insertUserOnDatabase(user)
         observeVMEvents()
-    }
-
-    private fun createUserWithoutPhoto() {
-        binding.registerChooseLater.setOnClickListener {
-            uriImage = Uri.parse("")
-            val finalUser = user.copy(photo = uriImage)
-            viewModel.insertNewUserOnDatabase(finalUser)
-        }
+        backButton()
     }
 
     private fun clickToChoosePhoto() {
@@ -78,26 +56,25 @@ class PhotoFragment : Fragment() {
 
     private fun gallery() = getContent.launch("image/*")
 
-    private fun setImageFromGallery(uri: Uri) {
+    private fun setImageFromGallery(uri: Uri){
         binding.registerImage.setImageURI(uri)
         uriImage = uri
     }
 
-    private fun insertUserOnDatabase() {
-        if (uriImage != null) {
-            binding.nextButtonPhoto.setOnClickListener {
-                val finalUser = user.copy(photo = uriImage)
-                viewModel.insertNewUserOnDatabase(finalUser)
+    private fun insertUserOnDatabase(user: User) {
+        binding.nextButtonPhoto.setOnClickListener {
+            if (uriImage != null){
+                makeUserWithPhotoOrNot(user)
+            } else {
+                uriImage = Uri.parse("")
+                makeUserWithPhotoOrNot(user)
             }
-        } else {
-            uriImage = Uri.parse("")
-            val finalUser = user.copy(photo = uriImage)
-            viewModel.insertNewUserOnDatabase(finalUser)
         }
     }
 
-    private fun makeUserWithOrWithoutPhoto(user: User) {
-
+    private fun makeUserWithPhotoOrNot(user: User){
+        val finalUser = user.copy(photo = uriImage)
+        viewModel.insertNewUserOnDatabase(finalUser)
     }
 
     private fun observeVMEvents() {
@@ -125,5 +102,11 @@ class PhotoFragment : Fragment() {
             Bundle().apply {
                 putParcelable("REGISTER_USER", user)
             })
+    }
+
+    private fun backButton(){
+        binding.backButtonPhoto.setOnClickListener{
+            findNavController().popBackStack()
+        }
     }
 }

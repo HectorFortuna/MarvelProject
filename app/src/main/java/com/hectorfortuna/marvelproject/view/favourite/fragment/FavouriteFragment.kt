@@ -9,10 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.Status
-import com.hectorfortuna.marvelproject.data.db.AppDatabase
-import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
-import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.model.User
@@ -21,17 +18,17 @@ import com.hectorfortuna.marvelproject.databinding.FragmentFavouriteBinding
 import com.hectorfortuna.marvelproject.util.ConfirmDialog
 import com.hectorfortuna.marvelproject.view.adapter.CharacterAdapter
 import com.hectorfortuna.marvelproject.view.favourite.viewmodel.FavouriteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
+@AndroidEntryPoint
 class FavouriteFragment : Fragment() {
     lateinit var viewModel: FavouriteViewModel
     lateinit var repository: DatabaseRepository
     private lateinit var user: User
     private lateinit var characterAdapter: CharacterAdapter
-    private val dao: CharacterDAO by lazy {
-        AppDatabase.getDb(requireContext()).characterDao()
-    }
+
 
     private lateinit var binding: FragmentFavouriteBinding
     override fun onCreateView(
@@ -44,8 +41,6 @@ class FavouriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        repository = DatabaseRepositoryImpl(dao)
 
         activity?.let {
             user = it.intent.getParcelableExtra<User>("USER") as User

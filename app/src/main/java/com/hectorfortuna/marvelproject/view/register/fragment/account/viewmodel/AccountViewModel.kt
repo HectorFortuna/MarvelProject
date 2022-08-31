@@ -4,8 +4,9 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.hectorfortuna.marvelproject.R
+import dagger.hilt.android.lifecycle.HiltViewModel
+
 
 class AccountViewModel : ViewModel() {
 
@@ -51,13 +52,4 @@ class AccountViewModel : ViewModel() {
             R.string.valid_name
         } else null
 
-    class AccountViewModelProviderFactory(
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
-                return AccountViewModel() as T
-            }
-            throw  IllegalArgumentException("Unknown ViewModel")
-        }
-    }
 }

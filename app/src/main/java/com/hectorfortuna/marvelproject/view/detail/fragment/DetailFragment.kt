@@ -6,21 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.Status
-import com.hectorfortuna.marvelproject.data.db.AppDatabase
-import com.hectorfortuna.marvelproject.data.db.CharacterDAO
-import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepository
-import com.hectorfortuna.marvelproject.data.db.repository.DatabaseRepositoryImpl
 import com.hectorfortuna.marvelproject.data.model.Favorites
 import com.hectorfortuna.marvelproject.data.model.User
+import com.hectorfortuna.marvelproject.data.model.comics.Date
+import com.hectorfortuna.marvelproject.data.model.comics.Price
 import com.hectorfortuna.marvelproject.data.model.comics.Result
-import com.hectorfortuna.marvelproject.data.network.ApiService
-import com.hectorfortuna.marvelproject.data.repository.comics.CategoryRepository
-import com.hectorfortuna.marvelproject.data.repository.comics.CategoryRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.CharacterDetailBinding
 import com.hectorfortuna.marvelproject.util.apiKey
 import com.hectorfortuna.marvelproject.util.hash
@@ -30,23 +26,18 @@ import com.hectorfortuna.marvelproject.view.detail.decoration.BoundsOffsetDecora
 import com.hectorfortuna.marvelproject.view.detail.decoration.LinearHorizontalSpacingDecoration
 import com.hectorfortuna.marvelproject.view.detail.decoration.ProminentLayoutManager
 import com.hectorfortuna.marvelproject.view.detail.viewmodel.DetailViewModel
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
-    private lateinit var viewModel: DetailViewModel
-    private lateinit var repository: DatabaseRepository
-    private lateinit var categoryRepository: CategoryRepository
+    private val viewModel by viewModels<DetailViewModel>()
+
     private lateinit var snapHelper: SnapHelper
     private lateinit var carouselAdapter: CarouselAdapter
     private lateinit var binding: CharacterDetailBinding
-    private lateinit var result: com.hectorfortuna.marvelproject.data.model.comics.Result
     private lateinit var favorite: Favorites
     private lateinit var user: User
     private var checkCharacter: Boolean = false
-    private val dao: CharacterDAO by lazy {
-        AppDatabase.getDb(requireContext()).characterDao()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,11 +51,6 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         favorite = arguments?.getParcelable<Favorites>("FAVORITE") as Favorites
-        repository = DatabaseRepositoryImpl(dao)
-        categoryRepository = CategoryRepositoryImpl(ApiService.service)
-        viewModel = DetailViewModel.DetailViewModelProviderFactory(
-            repository, Dispatchers.IO, categoryRepository
-        ).create(DetailViewModel::class.java)
 
         getUserByIntent()
 
@@ -73,15 +59,17 @@ class DetailFragment : Fragment() {
         getSeries(id = favorite.id)
 
         binding.run {
-            setImage(imgDetail)
-
-            detailsTitle.text = favorite.name
-            detailsDescription.text = favorite.description
-
+            setCharacterScreen()
             setFavoriteCharacter()
         }
 
         observeVMEvents()
+    }
+
+    private fun CharacterDetailBinding.setCharacterScreen() {
+        setImage(imgDetail)
+        detailsTitle.text = favorite.name
+        detailsDescription.text = favorite.description
     }
 
     private fun getUserByIntent() {
@@ -91,18 +79,19 @@ class DetailFragment : Fragment() {
     }
 
     private fun CharacterDetailBinding.setFavoriteCharacter() {
-        fabDetails.setOnClickListener {
-
-            checkCharacter = if (checkCharacter) {
+        fabDetails.setOnClickListener{
+            if (checkCharacter) {
                 val newFavorite = favorite.copy(email = user.email)
                 viewModel.deleteCharacter(newFavorite)
-                fabDetails.setImageResource(R.drawable.ic_full_favourite)
-                false
+                fabDetails.setIconResource(R.drawable.ic_fab)
+                fabDetails.setText(getString(R.string.fab_favoritar))
+                checkCharacter = false
             } else {
                 val copyFavorite = favorite.copy(email = user.email)
                 viewModel.insertFavorite(copyFavorite)
-                fabDetails.setImageResource(R.drawable.ic_fab)
-                true
+                fabDetails.setIconResource(R.drawable.ic_full_favourite)
+                fabDetails.setText(getString(R.string.fab_favoritado))
+                checkCharacter = true
             }
         }
     }
@@ -162,7 +151,8 @@ class DetailFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { exist ->
                         if (exist) {
-                            binding.fabDetails.setImageResource(R.drawable.ic_favorite)
+                            binding.fabDetails.setIconResource(R.drawable.ic_full_favourite)
+                            binding.fabDetails.setText(R.string.fab_favoritado)
                         }
                         checkCharacter = exist
                     }
@@ -176,7 +166,82 @@ class DetailFragment : Fragment() {
     }
 
     private fun setAdapter(list: List<Result>) {
-        carouselAdapter = CarouselAdapter(list)
+        carouselAdapter = CarouselAdapter(list){
+            binding.run {
+                setupComicsImage(it)
+                setupComicsScreen(it)
+            }
+        }
+    }
+
+    private fun CharacterDetailBinding.setupComicsImage(it: Result) {
+        Glide.with(this@DetailFragment)
+            .load("${it.thumbnail.path}.${it.thumbnail.extension}")
+            .into(imgDetail)
+    }
+
+    private fun CharacterDetailBinding.setupComicsScreen(it: Result) {
+        detailsTitle.text = it.title
+        detailsDescription.text = it.description
+
+        fabDetails.visibility = View.INVISIBLE
+        backToCharacter()
+
+        val page = it.pageCount.toString()
+        val price = it.prices
+        val itemPrice = it.prices?.first()?.price
+        setPrices(price, itemPrice)
+        setPage(page, it)
+        setDate(it, it.dates)
+    }
+
+    private fun CharacterDetailBinding.backToCharacter() {
+        fabBackToCharacter.visibility = View.VISIBLE
+        fabBackToCharacter.setOnClickListener {
+            setCharacterScreen()
+            fabBackToCharacter.visibility = View.GONE
+            comicsPages.visibility = View.INVISIBLE
+            comicsPrice.visibility = View.INVISIBLE
+            comicsOnSaleDate.visibility = View.INVISIBLE
+            fabDetails.visibility = View.VISIBLE
+        }
+    }
+
+    private fun CharacterDetailBinding.setDate(
+        it: Result,
+        dates: List<Date?>
+    ) {
+        if (it.dates.isNullOrEmpty()) {
+            comicsOnSaleDate.visibility = View.INVISIBLE
+        } else {
+            comicsOnSaleDate.visibility = View.VISIBLE
+            comicsOnSaleDate.text = "Release Date: ${dates.first()?.date?.substring(0, 10)?.replace("-", "/")}"
+        }
+    }
+
+    private fun CharacterDetailBinding.setPage(
+        page: String,
+        it: Result
+    ) {
+        if (page.isNullOrBlank() || page == "0") {
+            comicsPages.visibility = View.INVISIBLE
+        } else {
+            comicsPages.visibility = View.VISIBLE
+            comicsPages.text = "Pages: ${it.pageCount}"
+        }
+    }
+
+    private fun CharacterDetailBinding.setPrices(
+        price: List<Price>?,
+        itemPrice: Double?,
+
+    ) {
+        if (price.isNullOrEmpty() || itemPrice.toString()  == "0.0") {
+            comicsPrice.visibility = View.INVISIBLE
+        } else {
+            comicsPrice.visibility = View.VISIBLE
+            comicsPrice.text = "Price: $${price.first()?.price.toString()}"
+        }
     }
 
     private fun setRecycler(list: List<Result>) {

@@ -1,15 +1,21 @@
 package com.hectorfortuna.marvelproject.view.login.viewmodel
 
 import android.util.Patterns
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.repository.login.LoginRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val repository: LoginRepository
 ) : ViewModel() {
 
@@ -68,14 +74,4 @@ class LoginViewModel(
             else -> null
         }
 
-    class LoginViewModelProviderFactory(
-        private val repository: LoginRepository
-    ): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
-                return LoginViewModel(repository) as T
-            }
-            throw IllegalArgumentException("Unknown viewModel Class")
-        }
-    }
 }

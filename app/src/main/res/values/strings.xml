@@ -43,4 +43,6 @@
     <string name="small_password">Senha deve possuir 8 caracteres</string>
     <string name="valid_name">Digite um nome válido</string>
     <string name="passwordsArentTheSame">Senhas não são iguais</string>
+    <string name="fab_favoritado">Favoritado</string>
+    <string name="fab_favoritar">Favoritar</string>
 </resources>

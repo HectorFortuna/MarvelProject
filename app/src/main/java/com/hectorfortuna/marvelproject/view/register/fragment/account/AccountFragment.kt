@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.databinding.FragmentAccountBinding
 import com.hectorfortuna.marvelproject.util.setError
 import com.hectorfortuna.marvelproject.view.register.fragment.account.viewmodel.AccountViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AccountFragment : Fragment() {
     private lateinit var binding: FragmentAccountBinding
-    private lateinit var viewModel: AccountViewModel
+    private val viewModel by viewModels<AccountViewModel>()
     private lateinit var user: User
 
     override fun onCreateView(
@@ -28,11 +31,9 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = AccountViewModel.AccountViewModelProviderFactory()
-            .create(AccountViewModel::class.java)
-
         observeVMEvents()
         goToPasswordStep()
+        backButton()
     }
 
     private fun goToPasswordStep() {
@@ -65,6 +66,12 @@ class AccountFragment : Fragment() {
         }
         viewModel.sameEmailsFieldErrorResId.observe(viewLifecycleOwner){
             binding.emailConfirmationLayout.setError(requireContext(), it)
+        }
+    }
+
+    private fun backButton(){
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }

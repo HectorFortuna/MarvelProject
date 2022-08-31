@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hectorfortuna.marvelproject.R
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.databinding.FragmentPasswordBinding
 import com.hectorfortuna.marvelproject.util.setError
 import com.hectorfortuna.marvelproject.view.register.fragment.password.viewmodel.PasswordViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PasswordFragment : Fragment() {
     private lateinit var binding: FragmentPasswordBinding
-    private lateinit var viewModel: PasswordViewModel
+    private val viewModel by viewModels<PasswordViewModel>()
     private lateinit var user: User
 
     override fun onCreateView(
@@ -27,12 +30,12 @@ class PasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = PasswordViewModel.PasswordViewModelProviderFactory()
-            .create(PasswordViewModel::class.java)
+
         user = arguments?.getParcelable<User>("REGISTER_USER") as User
 
         observeVMEvents()
         goToPhotoStep()
+        backButton()
     }
 
     private fun goToPhotoStep() {
@@ -61,6 +64,12 @@ class PasswordFragment : Fragment() {
         }
         viewModel.passwordIsDifferentFieldErrorResId.observe(viewLifecycleOwner){
             binding.confirmPasswordLayout.setError(requireContext(),it)
+        }
+    }
+
+    private fun backButton(){
+        binding.backButtonPassword.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 }

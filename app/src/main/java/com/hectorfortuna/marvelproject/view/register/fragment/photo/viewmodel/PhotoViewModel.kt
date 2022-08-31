@@ -1,16 +1,23 @@
 package com.hectorfortuna.marvelproject.view.register.fragment.photo.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hectorfortuna.marvelproject.core.State
 import com.hectorfortuna.marvelproject.data.model.User
 import com.hectorfortuna.marvelproject.data.repository.register.RegisterRepository
+import com.hectorfortuna.marvelproject.di.qualifier.Io
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PhotoViewModel(
+@HiltViewModel
+class PhotoViewModel @Inject constructor(
     private val repository: RegisterRepository,
-    private val ioDispatcher: CoroutineDispatcher
+    @Io private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _user = MutableLiveData<State<Boolean>>()
@@ -28,18 +35,6 @@ class PhotoViewModel(
             } catch (e: Exception) {
                 _user.value = State.error(e)
             }
-        }
-    }
-
-    class PhotoViewModelProvider(
-        private val repository: RegisterRepository,
-        private val ioDispatcher: CoroutineDispatcher
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(PhotoViewModel::class.java)) {
-                return PhotoViewModel(repository, ioDispatcher) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel Class")
         }
     }
 }

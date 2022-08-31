@@ -1,15 +1,24 @@
-package com.hectorfortuna.marvelproject.data.network
-
+package com.hectorfortuna.marvelproject.di.module
 
 import com.google.gson.GsonBuilder
 import com.hectorfortuna.marvelproject.util.baseUrl
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-object ApiService {
-    private fun initRetrofit(): Retrofit {
+@Module
+@InstallIn(SingletonComponent::class)
+object RetrofitModule {
+
+    @Singleton
+    @Provides
+    fun initRetrofit(): com.hectorfortuna.marvelproject.data.network.Service {
         val gson = GsonBuilder().setLenient().create()
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -21,7 +30,6 @@ object ApiService {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
+            .create(com.hectorfortuna.marvelproject.data.network.Service::class.java)
     }
-
-    val service: Service = initRetrofit().create(Service::class.java)
 }

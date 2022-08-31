@@ -3,13 +3,10 @@ package com.hectorfortuna.marvelproject.view.login.activity
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.hectorfortuna.marvelproject.core.Status
-import com.hectorfortuna.marvelproject.data.db.AppDatabase
-import com.hectorfortuna.marvelproject.data.db.CharacterDAO
 import com.hectorfortuna.marvelproject.data.model.User
-import com.hectorfortuna.marvelproject.data.repository.login.LoginRepository
-import com.hectorfortuna.marvelproject.data.repository.login.LoginRepositoryImpl
 import com.hectorfortuna.marvelproject.databinding.ActivityLoginBinding
 import com.hectorfortuna.marvelproject.util.Watcher
 import com.hectorfortuna.marvelproject.util.setError
@@ -17,22 +14,18 @@ import com.hectorfortuna.marvelproject.util.toast
 import com.hectorfortuna.marvelproject.view.home.activity.HomeActivity
 import com.hectorfortuna.marvelproject.view.login.viewmodel.LoginViewModel
 import com.hectorfortuna.marvelproject.view.register.activity.RegisterActivity
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var viewModel: LoginViewModel
-    private lateinit var repository: LoginRepository
-    private val dao: CharacterDAO by lazy { AppDatabase.getDb(applicationContext).characterDao() }
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        repository = LoginRepositoryImpl(dao)
-        viewModel = LoginViewModel.LoginViewModelProviderFactory(repository)
-            .create(LoginViewModel::class.java)
 
         observeVMEvents()
 

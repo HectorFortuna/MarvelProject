@@ -3,8 +3,8 @@ package com.hectorfortuna.marvelproject.data.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.hectorfortuna.marvelproject.data.model.Favorites
-import com.hectorfortuna.marvelproject.data.model.Results
 import com.hectorfortuna.marvelproject.data.model.User
+
 
 @Dao
 interface CharacterDAO {
